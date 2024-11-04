@@ -46,7 +46,8 @@
             <div class="products-grid">
                 <article class="product-card">
                     <div class="product-content">
-                        <a class="product-image-wrapper" href="#">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
                             <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
                         </a>
                         <div class="product-details">
@@ -58,21 +59,278 @@
                                 <p>330ml</p>
                             </div>
                         </div>
-                        <div class="product-buttons">
-                            <p class="product-price">€2,50 per can</p>
-                            <a class="cta" href="#">Options</a>
-                            <a class="cta" href="#">Details</a>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
                         </div>
-                        
-
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="shipping-disclaimer">
+                <h2>Free Standard Delivery</h2>
+                <p>When you spend over €50</p>
+            </div>
+            <div class="products-grid">
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-content">
+                        <span class="product-tag hidden">Best Seller</span>
+                        <a class="product-image-wrapper" href="productpage.php">
+                            <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                        </a>
+                        <div class="product-details">
+                            <h3 class="product-title">Funky Nebula IPA</h3>
+                            <p class="product-keywords">Taste the cosmos.</p>
+                            <div class="product-specifications">
+                                <p>5.4%</p>
+                                <p class="specification-middle">IPA</p>
+                                <p>330ml</p>
+                            </div>
+                        </div>
+                        <div class="product-cta">
+                            <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                            <div class="product-btns">
+                                <!-- met javascript hoeveelheid scherm popup -->
+                                <a class="btn-primary" href="#">Options</a>
+                                <a class="btn-secondary" href="productpage.php">Details</a>
+                            </div>
+                        </div>
                     </div>
                 </article>
             </div>
         </section>
-
     </main>
 
+    <?php include 'newsletter.php'; ?>
 
-    <!-- <?php include 'footer.php'; ?> -->
+    <?php include 'footer.php'; ?>
 </body>
 </html>
