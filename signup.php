@@ -14,6 +14,12 @@
         } 
         
         // Only proceed with registration if the user is not an admin
+        // and the email is not already in use
+        if ($user->emailExists($email)) {
+            echo "Dit e-mailadres is al in gebruik.";
+            exit;
+        }
+        
         $user->setEmail($email);
         $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]));
     
