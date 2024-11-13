@@ -91,6 +91,11 @@ main {
 
 }
 
+.user-email {
+    font-size: 0.8rem; 
+    color: var(--c-black); 
+    
+  }
 
 .hero {
     width: 100%;

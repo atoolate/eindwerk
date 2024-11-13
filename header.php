@@ -13,8 +13,17 @@
                 </div>
                 <a href="#"><img id="logo" src="./images/xDbrewery-logo.png" alt="logo"></a>
                 <div class="navbar-user">
-                    <a class="cta" href="signup.php"><?php echo $user_email ?> <i class="fa-solid fa-user"></i></a>
                     <a class="cta" id="cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <?php if (isset($_SESSION['email'])): ?>
+                        <a class="cta" href="#">
+                            <span class="user-email"><?php echo $user_email ?></span>
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                        <a class="cta" href="logout.php">Logout</a>
+                    <?php else: ?>
+                        <a class="cta" href="login.php">Login</a>
+                    <?php endif; ?>
+
                 </div>
         </nav>
 </header>

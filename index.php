@@ -9,7 +9,7 @@
     if (isset($_SESSION['email'])) {
         $user_email = $_SESSION['email'];
     } else {
-        $user_email = "Account aanmaken";  // Optioneel, voor als de gebruiker niet is ingelogd
+        $user_email = null;
     }
 
 ?><!DOCTYPE html>
