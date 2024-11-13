@@ -1,0 +1,9 @@
+{
+    "name": "alex/eindwerk",
+    "autoload": {
+        "psr-4": {
+            "Alex\\Eindwerk\\": "classes/"
+        }
+    },
+    "require": {}
+}
