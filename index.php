@@ -1,6 +1,16 @@
 <?php 
     namespace Alex\Eindwerk;
     include_once(__DIR__ . '/vendor/autoload.php');
+    
+    // Start de sessie om toegang te krijgen tot gebruikersgegevens
+    session_start();
+
+    // Controleer of de gebruiker is ingelogd
+    if (isset($_SESSION['email'])) {
+        $user_email = $_SESSION['email'];
+    } else {
+        $user_email = "Account aanmaken";  // Optioneel, voor als de gebruiker niet is ingelogd
+    }
 
 ?><!DOCTYPE html>
 <html lang="en">

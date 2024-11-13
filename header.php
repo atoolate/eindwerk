@@ -1,4 +1,8 @@
-<header>
+<?php 
+    namespace Alex\Eindwerk;
+    include_once(__DIR__ . '/vendor/autoload.php');
+
+?><header>
         <section class="notifications">
             <h3>📦 FREE shipping on orders over €50 📦</h3>
         </section>
@@ -9,7 +13,7 @@
                 </div>
                 <a href="#"><img id="logo" src="./images/xDbrewery-logo.png" alt="logo"></a>
                 <div class="navbar-user">
-                    <a class="cta" href="signup.php"><i class="fa-solid fa-user"></i></a>
+                    <a class="cta" href="signup.php"><?php echo $user_email ?> <i class="fa-solid fa-user"></i></a>
                     <a class="cta" id="cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
         </nav>
