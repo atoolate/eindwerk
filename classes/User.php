@@ -83,5 +83,28 @@
             }
         }
           
+        public function isAdmin($email) {
+            try {
+                $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+        
+                // Zoek naar de gebruiker in de database
+                $query = $conn->prepare("SELECT role FROM users WHERE email = :email");
+                $query->bindValue(":email", $email);
+                $query->execute();
+        
+                $result = $query->fetch(\PDO::FETCH_ASSOC);
+        
+                // Controleer of er een resultaat is en of het wachtwoord klopt
+                if ($result && $result['role'] == 'admin') {
+                    return true;
+                }
+                
+                return false;
+            } catch (\PDOException $e) {
+                // Foutmelding loggen of tonen
+                error_log("Fout bij inloggen: " . $e->getMessage());
+                return false;
+            }
+        }
     }
 

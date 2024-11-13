@@ -1,20 +1,30 @@
 <?php
     namespace Alex\Eindwerk;
     include_once(__DIR__ . '/vendor/autoload.php');
-
-    // Start de sessie, maar voeg pas sessiegegevens toe na succesvolle login
+    
+    // Start the session only once at the top
     session_start();
-
+    
     if (!empty($_POST)) {
         $user = new User();
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-        if ($user->canLogin($_POST['email'], $_POST['password'])) {
-            $_SESSION['email'] = $_POST['email'];
+        // check if the user is an admin
+        if ($user->isAdmin($email)) {
+            $_SESSION['admin'] = true;
+            header('Location: admin.php');
+            exit;
+        }
+        // only proceed with login if the user canLogin
+        if ($user->canLogin($email, $password)) {
+            $_SESSION['email'] = $email;
             header('Location: index.php');
             exit;
         } else {
-            echo "Ongeldige inloggegevens.";
+            echo "Er is een fout opgetreden bij het inloggen.";
         }
+
     }
 
 

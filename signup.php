@@ -4,7 +4,17 @@
     
     if (!empty($_POST)) {
         $user = new User();
-        $user->setEmail($_POST['email']);
+        $email = $_POST['email'];
+        
+        // Check if the user is an admin
+        if ($user->isAdmin($email)) {
+            $_SESSION['admin'] = true;
+            header('Location: admin.php');
+            exit;
+        } 
+        
+        // Only proceed with registration if the user is not an admin
+        $user->setEmail($email);
         $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]));
     
         if ($user->save()) {
