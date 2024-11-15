@@ -10,6 +10,7 @@
         
         // Check if the user is an admin
         if ($user->isAdmin($email)) {
+            $_SESSION['email'] = $email;
             $_SESSION['admin'] = true;
             header('Location: admin.php');
             exit;
