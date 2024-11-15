@@ -1,6 +1,8 @@
 <?php
     namespace Alex\Eindwerk;
     include_once(__DIR__ . '/vendor/autoload.php');
+
+    session_start();
     
     if (!empty($_POST)) {
         $user = new User();
