@@ -4,7 +4,7 @@
 
     session_start();
     // if is Admin is false, redirect to index.php
-    if ($_SESSION['admin'] === false) {
+    if (!isset($_SESSION['admin'])) {
         header('Location: index.php');
         exit;
     }    
