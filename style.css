@@ -78,12 +78,15 @@ main {
 
 }
 
-.navbar-links a, .navbar-user a {
+.navbar-a, .navbar-a {
     text-decoration: none;
     color: var(--c-black);
     font-family: var(--font-main);
     font-size: 1.2rem;
     font-weight: 500;
+    padding: 0.5em 1.3em;
+    border-radius: 24px;
+
 }
 
 .navbar-links a:hover, .navbar-user a:hover {
@@ -95,7 +98,60 @@ main {
     font-size: 0.8rem; 
     color: var(--c-black); 
     
-  }
+}
+
+.profile-dropdown {
+    position: relative; /* Allows the dropdown to position itself relative to this element */
+    display: inline-block; /* Keeps it inline with the rest of the navbar */
+}
+
+/* Style for the logout dropdown menu */
+#logout-menu {
+    display: none; /* Hidden by default */
+    position: absolute; /* Position relative to .profile-dropdown */
+    top: 100%; /* Dropdown starts right below the profile link */
+    left: 0; /* Align to the left edge of the profile link */
+    background-color: #fff; /* Background for visibility */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add dropdown shadow */
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000; /* Ensure it appears above other elements */
+    width: 150px; /* Set a consistent width for the dropdown */
+}
+
+/* Ensure proper spacing and alignment for the dropdown link */
+#logout-menu a {
+    text-decoration: none;
+    color: #333; /* Adjust for readability */
+    display: block; /* Full width clickable area */
+    padding: 8px 10px;
+}
+
+#logout-menu a:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}
+
+/* Show dropdown menu when class is toggled */
+#logout-menu.show {
+    display: block;
+}
+
+#logout {
+    font-size: 0.8rem;
+    color: var(--c-black);
+    font-weight: bold;
+    text-align: right;
+    padding: 0.2em 0.5em;
+    border-radius: 24px;
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+}
 
 .hero {
     width: 100%;

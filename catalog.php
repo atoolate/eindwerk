@@ -1,4 +1,13 @@
 <?php 
+    namespace Alex\Eindwerk;
+    include_once(__DIR__ . '/vendor/autoload.php');
+    session_start();
+
+    if (isset($_SESSION['email'])) {
+        $user_email = $_SESSION['email'];
+    } else {
+        $user_email = null;
+    }
 
 ?><!DOCTYPE html>
 <html lang="en">

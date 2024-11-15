@@ -8,22 +8,39 @@
         </section>
         <nav class="navbar">
                 <div class="navbar-links">
-                    <a class="cta" href="index.php">Home</a>
-                    <a class="cta" href="catalog.php">Shop</a>
+                    <a class="navbar-a" href="index.php">Home</a>
+                    <a class="navbar-a" href="catalog.php">Shop</a>
                 </div>
                 <a href="#"><img id="logo" src="./images/xDbrewery-logo.png" alt="logo"></a>
                 <div class="navbar-user">
-                    <a class="cta" id="cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <a class="navbar-a" id="cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
                     <?php if (isset($_SESSION['email'])): ?>
-                        <a class="cta" href="#">
-                            <span class="user-email"><?php echo $user_email ?></span>
-                            <i class="fa-solid fa-user"></i>
-                        </a>
-                        <a class="cta" href="logout.php">Logout</a>
+                        <div class="profile-dropdown">
+                            <a class="navbar-a" id="profile-dropdown" href="#">
+                                <span class="user-email"><?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                            <div id="logout-menu" class="hidden">
+                                <a id="logout" href="logout.php">Logout?</a>
+                            </div>
+                        </div>
                     <?php else: ?>
-                        <a class="cta" href="login.php">Login</a>
+                        <a class="navbar-a" href="login.php">Login</a>
                     <?php endif; ?>
 
                 </div>
         </nav>
+        <script>
+            const logoutMenu = document.querySelector('#logout-menu');
+            const dropdown = document.querySelector('#profile-dropdown');
+            dropdown.addEventListener('click', () => {
+                logoutMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && !logoutMenu.contains(e.target)) {
+                logoutMenu.classList.remove('show');
+            }
+        });
+        </script>
 </header>
