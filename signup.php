@@ -49,5 +49,6 @@
         <input type="password" name="password" id="password">
         <button type="submit">Account aanmaken</button>
     </form>
+    <a href="login.php">Heb je al een account? Log in.</a>
 </body>
 </html>

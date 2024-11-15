@@ -47,5 +47,6 @@
         <input type="password" name="password" id="password">
         <button type="submit">Inloggen</button>
     </form>
+    <a href="signup.php">Nog geen account? Registreer hier.</a>
 </body>
 </html>
