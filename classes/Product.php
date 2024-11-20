@@ -67,7 +67,7 @@ class Product {
     // Save product to database
     public function saveProduct() {
         try {
-            $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+            $conn = Db::getConnection();
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     
             // Prepare the query
@@ -97,7 +97,7 @@ class Product {
     // Fetch all products
     public static function getAll() {
         try {
-            $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+            $conn = Db::getConnection();
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             $statement = $conn->query("SELECT * FROM products");

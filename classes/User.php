@@ -6,6 +6,7 @@
         private $password;
         private $credits = 1000;
 
+        // Getters and setters
         public function getEmail()
         {
                 return $this->email;
@@ -30,11 +31,25 @@
                 return $this;
         }
 
+        public function getCredits()
+        {
+                return $this->credits;
+        }
+
+        public function setCredits($credits)
+        {
+                $this->credits = $credits;
+
+                return $this;
+        }
+
+
+
         // saven
         public function save() {
             try {
                 // Gebruik \PDO om naar de globale PDO-klasse te verwijzen
-                $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+                $conn = Db::getConnection();
                 
                 // Bereid de query voor
                 $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
@@ -54,14 +69,14 @@
 
 
         public static function getAll() {
-            $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", 'root');
+            $conn = Db::getConnection();
             $statement = $conn->query("select * from users");
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function canLogin($email, $password) {
             try {
-                $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+                $conn = Db::getConnection();
         
                 // Zoek naar de gebruiker in de database
                 $query = $conn->prepare("SELECT password FROM users WHERE email = :email");
@@ -85,7 +100,7 @@
           
         public function isAdmin($email) {
             try {
-                $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+                $conn = Db::getConnection();
         
                 // Zoek naar de gebruiker in de database
                 $query = $conn->prepare("SELECT role FROM users WHERE email = :email");
@@ -109,7 +124,7 @@
 
         public function emailExists($email) {
             try {
-                $conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
+                $conn = Db::getConnection();
         
                 // Zoek naar de gebruiker in de database
                 $query = $conn->prepare("SELECT email FROM users WHERE email = :email");
