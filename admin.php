@@ -30,9 +30,17 @@
         $product->setCategoryId($_POST['category_id']);
         $product->setStock($_POST['stock']);
 
+        $productId = $product->saveProduct();
+
         // Save product to database
-        if ($product->saveProduct()) {
+        if ($productId) {
             echo "Product toegevoegd!";
+
+            // Save images to database using saveProductImages()
+            $images = $_FILES['images'];
+            $product->saveProductImages($productId, $images);
+
+
         } else {
             echo "Er is een fout opgetreden bij het toevoegen van het product.";
         }

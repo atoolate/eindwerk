@@ -11,7 +11,7 @@
         $password = $_POST['password'];
 
         // check if the user is an admin
-        if ($user->isAdmin($email)) {
+        if ($user->isAdmin($email, $password)) {
             $_SESSION['admin'] = true;
             $_SESSION['email'] = $email;
             header('Location: admin.php');
@@ -27,7 +27,6 @@
         }
 
     }
-
 
 
 ?><!DOCTYPE html>
