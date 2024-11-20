@@ -11,10 +11,10 @@
 
     // Fetch categories from the database
     try {
-        $db = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
-        $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $conn = Db::getConnection();
+        $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-        $query = $db->query("SELECT id, name FROM categories");
+        $query = $conn->query("SELECT id, name FROM categories");
         $categories = $query->fetchAll(\PDO::FETCH_ASSOC); // Fetch as an associative array
     } catch (\PDOException $e) {
         echo "Error fetching categories: " . $e->getMessage();
