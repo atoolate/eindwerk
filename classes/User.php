@@ -98,26 +98,28 @@
             }
         }
           
-        public function isAdmin($email) {
+        public function isAdmin($email, $password) {
             try {
-                $conn = Db::getConnection();
+                // Eerst inloggen met canLogin()
+                if ($this->canLogin($email, $password)) {
+                    $conn = Db::getConnection();
         
-                // Zoek naar de gebruiker in de database
-                $query = $conn->prepare("SELECT role FROM users WHERE email = :email");
-                $query->bindValue(":email", $email);
-                $query->execute();
+                    // Zoek naar de rol van de gebruiker
+                    $query = $conn->prepare("SELECT role FROM users WHERE email = :email");
+                    $query->bindValue(":email", $email, \PDO::PARAM_STR);
+                    $query->execute();
         
-                $result = $query->fetch(\PDO::FETCH_ASSOC);
+                    $result = $query->fetch(\PDO::FETCH_ASSOC);
         
-                // Controleer of er een resultaat is en of het wachtwoord klopt
-                if ($result && $result['role'] == 'admin') {
-                    return true;
+                    // Controleer of de gebruiker een admin is
+                    if ($result && $result['role'] === 'admin') {
+                        return true;
+                    }
                 }
-                
-                return false;
+        
+                return false; // Geen admin of kan niet inloggen
             } catch (\PDOException $e) {
-                // Foutmelding loggen of tonen
-                error_log("Fout bij inloggen: " . $e->getMessage());
+                error_log("Fout bij admin-check: " . $e->getMessage());
                 return false;
             }
         }

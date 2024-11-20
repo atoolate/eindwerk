@@ -86,7 +86,38 @@ class Product {
             return false;
         }
     }
-    
+
+    //save product images to database
+    // user can upload multiple images at once related to a product
+    // images should be uploaded into uploads folder
+    // save the path of the image in the database
+    public function saveProductImages($productId, $images) {
+        $targetDir = __DIR__ . "/../uploads/";
+        $imagesArray = [];
+
+        foreach ($images['name'] as $key => $name) {
+            $targetFile = $targetDir . basename($name);
+            $imagesArray[] = $targetFile;
+            move_uploaded_file($images['tmp_name'][$key], $targetFile);
+        }
+
+        try {
+            $conn = Db::getConnection();
+            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            $statement = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
+
+            foreach ($imagesArray as $image) {
+                $statement->bindValue(":product_id", $productId);
+                $statement->bindValue(":image_path", $image);
+                $statement->execute();
+            }
+
+        } catch (\PDOException $e) {
+            echo "Error during SQL execution: " . $e->getMessage();
+            error_log("Error adding product images: " . $e->getMessage());
+        }
+    }
     
 
     // Fetch all products
