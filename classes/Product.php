@@ -7,7 +7,6 @@ class Product {
     private $price;
     private $category_id;
     private $stock;
-    private $image;
 
     // Getters and setters
     public function getTitle() {
@@ -55,14 +54,6 @@ class Product {
         return $this;
     }
 
-    public function getImage() {
-        return $this->image;
-    }
-
-    public function setImage($image) {
-        $this->image = $image;
-        return $this;
-    }
 
     // Save product to database
     public function saveProduct() {
@@ -72,21 +63,25 @@ class Product {
     
             // Prepare the query
             $statement = $conn->prepare("
-                INSERT INTO products (title, description, price, image, category_id, stock) 
-                VALUES (:title, :description, :price, :image, :category_id, :stock)
+                INSERT INTO products (title, price, description, category_id, stock) 
+                VALUES (:title, :price, :description, :category_id, :stock)
             ");
     
             // Bind values
             $statement->bindValue(":title", $this->title);
-            $statement->bindValue(":description", $this->description);
             $statement->bindValue(":price", $this->price);
-            $statement->bindValue(":image", $this->image);
+            $statement->bindValue(":description", $this->description);
             $statement->bindValue(":category_id", $this->category_id);
             $statement->bindValue(":stock", $this->stock);
     
             // Execute the query
-            return $statement->execute();
+            $statement->execute();
+
+            // Get the ID of the newly added product
+            return $conn->lastInsertId();
+
         } catch (\PDOException $e) {
+            echo "Error during SQL execution: " . $e->getMessage();
             error_log("Error adding product: " . $e->getMessage());
             return false;
         }

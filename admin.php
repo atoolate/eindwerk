@@ -27,17 +27,17 @@
         $product->setTitle($_POST['title']);
         $product->setDescription($_POST['description']);
         $product->setPrice($_POST['price']);
-        $product->setImage($_FILES['image']['name']);
         $product->setCategoryId($_POST['category_id']);
         $product->setStock($_POST['stock']);
-        
+
+        // Save product to database
         if ($product->saveProduct()) {
-            // Move the uploaded file to the images folder
-            move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/images/' . $_FILES['image']['name']);
+            echo "Product toegevoegd!";
         } else {
             echo "Er is een fout opgetreden bij het toevoegen van het product.";
         }
     }
+    
     
 
 
@@ -64,13 +64,13 @@
         <h2>Add Product</h2>
         <form class="addProduct" action="" method="POST" enctype="multipart/form-data">
             <label for="title">Title</label>
-            <input type="text" name="title" id="title">
+            <input type="text" name="title" id="title" required>
             <label for="description">Description</label>
-            <input type="text" name="description" id="description">
+            <input type="text" name="description" id="description" required>
             <label for="price">Price</label>
-            <input type="number" name="price" id="price">
+            <input type="number" name="price" id="price" min="0" required>
             <label for="image">Image</label>
-            <input type="file" name="image" id="image" accept="image/*">
+            <input type="file" name="images[]" id="image" accept="image/*" multiple>
             <label for="category_id">Category</label>
             <select name="category_id" id="category_id" required>
             <?php foreach ($categories as $category): ?>
@@ -80,7 +80,7 @@
             <?php endforeach; ?>
             </select>
             <label for="stock">Stock</label>
-            <input type="number" name="stock" id="stock">
+            <input type="number" name="stock" id="stock" min="0" required>
             <button type="submit">Add Product</button>
         </form>
     </main>
