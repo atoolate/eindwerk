@@ -76,7 +76,7 @@
             <label for="description">Description</label>
             <input type="text" name="description" id="description" required>
             <label for="price">Price</label>
-            <input type="number" name="price" id="price" min="0" required>
+            <input type="number" name="price" id="price" min="0" step="0.01" required>
             <label for="image">Image</label>
             <input type="file" name="images[]" id="image" accept="image/*" multiple>
             <label for="category_id">Category</label>
