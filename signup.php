@@ -7,9 +7,10 @@
     if (!empty($_POST)) {
         $user = new User();
         $email = $_POST['email'];
+        $password = $_POST['password'];
         
         // Check if the user is an admin
-        if ($user->isAdmin($email)) {
+        if ($user->isAdmin($email, $password)) {
             $_SESSION['email'] = $email;
             $_SESSION['admin'] = true;
             header('Location: admin.php');
