@@ -29,6 +29,9 @@
         $product->setPrice($_POST['price']);
         $product->setCategoryId($_POST['category_id']);
         $product->setStock($_POST['stock']);
+        $product->setAlcohol($_POST['alcohol']);
+        $product->setVolume($_POST['volume']);
+        $product->setTagline($_POST['tagline']);
 
         $productId = $product->saveProduct();
 
@@ -89,6 +92,12 @@
             </select>
             <label for="stock">Stock</label>
             <input type="number" name="stock" id="stock" min="0" required>
+            <label for="alcohol">Alcohol Percentage</label>
+            <input type="number" name="alcohol" id="alcohol" min="0" step="0.01" required>
+            <label for="volume">Volume (in Cl) </label>
+            <input type="number" name="volume" id="volume" min="0" step="0.01" required>
+            <label for="tagline">Tagline</label>
+            <input type="text" name="tagline" id="tagline" required>
             <button type="submit">Add Product</button>
         </form>
     </main>

@@ -7,6 +7,9 @@ class Product {
     private $price;
     private $category_id;
     private $stock;
+    private $alcohol;
+    private $volume;
+    private $tagline;
 
     // Getters and setters
     public function getTitle() {
@@ -54,6 +57,44 @@ class Product {
         return $this;
     }
 
+    public function getAlcohol()
+    {
+        return $this->alcohol;
+    }
+
+    public function setAlcohol($alcohol)
+    {
+        $this->alcohol = $alcohol;
+
+        return $this;
+    }
+
+    public function getVolume()
+    {
+        return $this->volume;
+    }
+
+    public function setVolume($volume)
+    {
+        $this->volume = $volume;
+
+        return $this;
+    }
+
+    public function getTagline()
+    {
+        return $this->tagline;
+    }
+
+    public function setTagline($tagline)
+    {
+        $this->tagline = $tagline;
+
+        return $this;
+    }
+
+
+
 
     // Save product to database
     public function saveProduct() {
@@ -63,8 +104,8 @@ class Product {
     
             // Prepare the query
             $statement = $conn->prepare("
-                INSERT INTO products (title, price, description, category_id, stock) 
-                VALUES (:title, :price, :description, :category_id, :stock)
+                INSERT INTO products (title, price, description, category_id, stock, alcohol, volume, tagline) 
+                VALUES (:title, :price, :description, :category_id, :stock, :alcohol, :volume, :tagline)
             ");
     
             // Bind values
@@ -73,6 +114,9 @@ class Product {
             $statement->bindValue(":description", $this->description);
             $statement->bindValue(":category_id", $this->category_id);
             $statement->bindValue(":stock", $this->stock);
+            $statement->bindValue(":alcohol", $this->alcohol);
+            $statement->bindValue(":volume", $this->volume);
+            $statement->bindValue(":tagline", $this->tagline);
     
             // Execute the query
             $statement->execute();
@@ -133,4 +177,7 @@ class Product {
             return [];
         }
     }
+
+    
+    
 }
