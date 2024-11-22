@@ -443,11 +443,16 @@ footer {
 .product-specifications {
     display: flex;
     justify-content: space-around;
-    padding: 0.4rem 3rem;
+    align-items: center;
+    padding: auto;
     background-color: var(--c-white);
     border-radius: 6px;
     font-size: 0.8rem;
     font-weight: bold;
+}
+
+.specifications-outside {
+    padding: 0.5em;
 }
 
 

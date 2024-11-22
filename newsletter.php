@@ -1,6 +1,6 @@
 <section class="newsletter">
         <div class="newsletter-content">
-            <h2>Join our community</h2>
+            <h2>Join our community.</h2>
             <div class="content-wrapper">
                 <div class="content-item">
                     <div class="dot"></div>

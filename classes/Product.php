@@ -136,30 +136,52 @@ class Product {
     // images should be uploaded into uploads folder
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
-        $targetDir = __DIR__ . "/../uploads/";
+        // Set target directory for uploads
+        $targetDir = "uploads/"; // Relative path
+        $absoluteTargetDir = __DIR__ . "/../" . $targetDir; // Absolute path for file operations
         $imagesArray = [];
-
-        foreach ($images['name'] as $key => $name) {
-            $targetFile = $targetDir . basename($name);
-            $imagesArray[] = $targetFile;
-            move_uploaded_file($images['tmp_name'][$key], $targetFile);
+    
+        // Ensure upload directory exists
+        if (!is_dir($absoluteTargetDir)) {
+            mkdir($absoluteTargetDir, 0777, true);
         }
-
+    
+        foreach ($images['name'] as $key => $name) {
+            // Validate the file as an image
+            $tmpName = $images['tmp_name'][$key];
+            $check = getimagesize($tmpName);
+            if ($check === false) {
+                throw new \Exception("File is not a valid image.");
+            }
+    
+            // Sanitize filename to prevent security issues
+            $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
+            $targetFile = $absoluteTargetDir . $safeName;
+    
+            // Move file to uploads folder
+            if (move_uploaded_file($tmpName, $targetFile)) {
+                // Save the relative path
+                $imagesArray[] = $targetDir . $safeName;
+            } else {
+                throw new \Exception("Failed to upload file: " . $safeName);
+            }
+        }
+    
+        // Save the relative paths to the database
         try {
             $conn = Db::getConnection();
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
+    
             $statement = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
-
-            foreach ($imagesArray as $image) {
+    
+            foreach ($imagesArray as $imagePath) {
                 $statement->bindValue(":product_id", $productId);
-                $statement->bindValue(":image_path", $image);
+                $statement->bindValue(":image_path", $imagePath);
                 $statement->execute();
             }
-
         } catch (\PDOException $e) {
-            echo "Error during SQL execution: " . $e->getMessage();
             error_log("Error adding product images: " . $e->getMessage());
+            throw new \Exception("An error occurred while saving product images.");
         }
     }
     
@@ -178,6 +200,47 @@ class Product {
         }
     }
 
+    // fetch all with images
+    public static function getAllWithData() {
+        try {
+            $conn = Db::getConnection();
     
+            $query = "
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(pi.image_path) AS images,
+                    c.name AS category_name
+                FROM 
+                    products p
+                LEFT JOIN 
+                    product_images pi
+                ON 
+                    p.id = pi.product_id
+                LEFT JOIN 
+                    categories c
+                ON 
+                    p.category_id = c.id
+                GROUP BY 
+                    p.id
+            ";
+    
+            $statement = $conn->prepare($query);
+            $statement->execute();
+    
+            return $statement->fetchAll(\PDO::FETCH_ASSOC); // Fetch results as associative arrays
+        } catch (\PDOException $e) {
+            error_log("Error fetching products with images and category: " . $e->getMessage());
+            return [];
+        }
+    }
+    
+
+    // a method to fetch the category name of a product using the category_id and linking it to the name in the categories table
+    
+
+    
+    
+    
+
     
 }

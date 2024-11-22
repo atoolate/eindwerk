@@ -12,6 +12,7 @@
     // Get all products
     $product = new Product();
     $products = $product->getAll(); 
+    $products = $product->getAllWithData();
 
 
 ?><!DOCTYPE html>
@@ -65,19 +66,19 @@
                         <div class="product-content">
                             <span class="product-tag hidden">Best Seller</span>
                             <a class="product-image-wrapper" href="productpage.php">
-                                <img class="product-image" src="images/funkynebula.webp" alt="Funky Nebula IPA">
+                                <img class="product-image" src="<?php echo $product['images'] ?>" alt="<?php echo $product['title'] ?>">
                             </a>
                             <div class="product-details">
-                                <h3 class="product-title">Funky Nebula IPA</h3>
-                                <p class="product-keywords">Taste the cosmos.</p>
+                                <h3 class="product-title"> <?php echo $product['title']?> </h3>
+                                <p class="product-keywords"><?php echo $product['tagline'] ?></p>
                                 <div class="product-specifications">
-                                    <p>5.4%</p>
-                                    <p class="specification-middle">IPA</p>
-                                    <p>330ml</p>
+                                    <p class="specifications-outside"><?php echo $product['alcohol'] ?>%</p>
+                                    <p class="specification-middle"><?php echo $product['category_name']; ?></p>
+                                    <p class="specifications-outside"><?php echo $product['volume'] ?>ml</p>
                                 </div>
                             </div>
                             <div class="product-cta">
-                                <p class="product-price">From <span id="price-unit">€1,90</span> per can</p>
+                                <p class="product-price">From <span id="price-unit">€<?php echo $product['price'] ?></span> per can</p>
                                 <div class="product-btns">
                                     <!-- met javascript hoeveelheid scherm popup -->
                                     <a class="btn-primary" href="#">Options</a>

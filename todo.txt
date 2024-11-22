@@ -1,4 +1,6 @@
 To do
     - Add firstname, lastname, adress & more to signup page
-    - Add products to DB
-    - Fix signup issue
+    - Add products to DB = OK
+    - Fix signup issue = OK
+    - Loop over products op productpage = OK
+
