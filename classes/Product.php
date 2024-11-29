@@ -93,9 +93,6 @@ class Product {
         return $this;
     }
 
-
-
-
     // Save product to database
     public function saveProduct() {
         try {
@@ -235,7 +232,54 @@ class Product {
     }
     
 
-    // a method to fetch the category name of a product using the category_id and linking it to the name in the categories table
+    // a method to get the total amount of products
+    public static function getTotalAmount() {
+        try {
+            $conn = Db::getConnection();
+            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            $statement = $conn->query("SELECT COUNT(*) FROM products");
+            return $statement->fetchColumn();
+        } catch (\PDOException $e) {
+            error_log("Error fetching total amount of products: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    // Fetch a single product by ID
+    public static function getById($id) {
+        try {
+            $conn = Db::getConnection();
+            $query = "
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(pi.image_path) AS images,
+                    c.name AS category_name
+                FROM 
+                    products p
+                LEFT JOIN 
+                    product_images pi
+                ON 
+                    p.id = pi.product_id
+                LEFT JOIN 
+                    categories c
+                ON 
+                    p.category_id = c.id
+                WHERE 
+                    p.id = :id
+                GROUP BY 
+                    p.id
+            ";
+            $statement = $conn->prepare($query);
+            $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+            $statement->execute();
+    
+            return $statement->fetch(\PDO::FETCH_ASSOC); // Fetch single product as an associative array
+        } catch (\PDOException $e) {
+            error_log("Error fetching product by ID: " . $e->getMessage());
+            return null;
+        }
+    }
     
 
     

@@ -1,0 +1,165 @@
+<?php 
+    namespace Alex\Eindwerk;
+    include_once(__DIR__ . '/vendor/autoload.php');
+
+
+    session_start();
+
+    $productId = $_GET['id'] ?? null;
+
+    if ($productId) {
+        $product = Product::getById($productId); // Fetch the product using its ID
+
+        // Get price per can using the product object
+        $pricePerCan = $product['price'];
+
+        // Define quantity options
+        $quantities = [4, 12, 24, 48];
+
+        // Define discount multipliers based on quantity
+        // Example: Higher quantities have progressively greater discounts
+        $discounts = [
+            4 => 1,        // No discount for 4 cans
+            12 => 0.95,    // 5% discount for 12 cans
+            24 => 0.90,    // 10% discount for 24 cans
+            48 => 0.85     // 15% discount for 48 cans
+        ];
+
+        // Calculate total prices with discounts
+        $pricingOptions = [];
+        foreach ($quantities as $quantity) {
+            $discountMultiplier = $discounts[$quantity]; // Get the discount for the quantity
+            $discountedPricePerCan = $pricePerCan * $discountMultiplier; // Apply the discount
+            $totalPrice = $discountedPricePerCan * $quantity; // Calculate total price
+
+            $pricingOptions[] = [
+                'quantity' => $quantity,
+                'total_price' => $totalPrice,
+                'price_per_can' => $discountedPricePerCan
+            ];
+        }
+
+        if (!$product) {
+            // Handle case where the product doesn't exist
+            header("Location: catalog.php"); // Redirect back to catalog
+            exit();
+        }
+    } else {
+        // Redirect if no ID is provided
+        header("Location: catalog.php");
+        exit();
+    }
+
+?><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="detail.css">
+    <title> <?php echo $product['title'] ?> </title>
+</head>
+<body>
+    <?php include 'header.php'; ?>
+
+    <main class="product-wrapper">
+        <div class="product-image-wrapper">
+            <img class="product-detail-image" src="<?php echo $product['images'] ?>" alt="<?php echo $product['title'] ?>">
+            <!-- add image selectors here -->
+        </div>
+        <div class="product-details">
+            <h1><?php echo $product['title'] ?></h1>
+            <p class="product-tagline"><?php echo $product['tagline'] ?></p>
+            <p class="product-description"><?php echo $product['description'] ?></p>
+
+            <div class="product-specifications-grid">
+                <div class="specifications-alcohol">
+                    <p class="grid-label">Alcohol</p>
+                    <p><?php echo $product['alcohol'] ?>%</p>
+                </div>
+                <div class="specifications-style">
+                    <p class="grid-label">Style</p>
+                    <p><?php echo $product['category_name'] ?></p>
+                </div>
+                <div class="specifications-volume">
+                    <p class="grid-label">Volume</p>
+                    <p><?php echo $product['volume'] ?>cl</p>
+                </div>
+            </div>
+
+            <div class="quantity-selector-wrapper">
+                <div class="quantity-selector">
+
+                    <?php foreach ($pricingOptions as $option): ?>
+                        <div class="quantity-row" data-stock="<?php echo $product['stock'] ?>">
+                            <div class="quantity-details">
+                                <p class="quantity"><?php echo $option['quantity']; ?> Beers</p>
+                                <div class="quantity-price">
+                                    <p class="price">€<?php echo number_format($option['total_price'], 2); ?></p>
+                                    <p class="price-per-item">€<?php echo number_format($option['price_per_can'], 2); ?> per beer</p>
+                                </div>
+                            </div>
+                            <div class="quantity-controls">
+                                <button class="decrement">-</button>
+                                <span class="quantity-value">0</span>
+                                <button class="increment">+</button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+
+            <!-- a div where users can select if they want a glass with their order, only for limited products -->
+            <?php if ($product['category_id'] == 4): ?>
+                <div class="glass-selector">
+                    <input type="checkbox" id="glass" name="glass" value="glass">
+                    <label for="glass">Add a glass</label>
+                </div>
+            <?php endif; ?>
+            <a href="#" class="btn-primary">Add to cart</a>
+        </div>
+    </main>
+
+    <?php include 'newsletter.php'; ?>
+
+    <?php include 'footer.php'; ?>
+
+
+
+    <script>
+        // Select all quantity rows
+        document.querySelectorAll('.quantity-row').forEach(row => {
+            // Get decrement, increment buttons, and quantity value span
+            const decrement = row.querySelector('.decrement');
+            const increment = row.querySelector('.increment');
+            const quantityValue = row.querySelector('.quantity-value');
+
+            // Add event listener for decrement button
+            decrement.addEventListener('click', () => {
+                let currentValue = parseInt(quantityValue.textContent); // Get current value
+                if (currentValue > 0) { // Ensure quantity doesn't go below 0
+                    quantityValue.textContent = currentValue - 1;
+                }
+            });
+
+            // Add event listener for increment button
+            increment.addEventListener('click', () => {
+                let currentValue = parseInt(quantityValue.textContent); // Get current value
+                quantityValue.textContent = currentValue + 1; // Increment value
+            });
+        });
+
+    </script>
+
+</body>
+</html>

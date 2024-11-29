@@ -1,5 +1,18 @@
 To do
+    - Add product detail pagina
+        - Add stock check and disable quantity if not available
+        - Add variants to limited edition (Custom glass, giftbox, etc)
     - Add firstname, lastname, adress & more to signup page
+    - Add javascript popup bij add to basket knop
+    - Add filter funtionality catalogus
+    - Add search functionality
+    - Admin can add/remove categories
+    - Admin can remove/edit products
+    - Add category images homepage
+
+
+
+Done:
     - Add products to DB = OK
     - Fix signup issue = OK
     - Loop over products op productpage = OK
