@@ -120,10 +120,10 @@
             </div>
 
             <!-- a div where users can select if they want a glass with their order, only for limited products -->
-            <?php if ($product['category_id'] == 4): ?>
+            <?php if (Category::hasGlassOption($product['category_id'])) : ?>
                 <div class="glass-selector">
                     <input type="checkbox" id="glass" name="glass" value="glass">
-                    <label for="glass">Add a glass</label>
+                    <label for="glass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
                 </div>
             <?php endif; ?>
             <a href="#" class="btn-primary">Add to cart</a>
