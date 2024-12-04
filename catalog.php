@@ -39,6 +39,11 @@
             <h1>Shop all</h1>
         </div>
 
+        <div class="shipping-disclaimer">
+                <h2>Free Standard Delivery</h2>
+                <p>When you spend over €50</p>
+        </div>
+
 
         <section class="products">
             <div class="products-header">
@@ -48,18 +53,19 @@
                         <p>Style</p>
                         <i class="fa-solid fa-chevron-down"></i>
                     </a>
-                    <ul class="dropdown-content">
+                    <ul class="dropdown-content hidden">
                         <?php foreach($categories as $category): ?>
                             <li id="<?php echo $category['id'] ?>"><?php echo $category['name']; ?></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
+
             <div class="products-grid">
                 <!-- foreach loop over de producten -->                 
                 <?php foreach($products as $product): ?>
                     
-                    <article class="product-card">
+                    <article class="product-card" data-category-id="<?php echo $product['category_id'] ?>">
                         <div class="product-content">
                             <span class="product-tag hidden">Best Seller</span>
                             <a class="product-image-wrapper" href="productpage.php">
@@ -87,20 +93,14 @@
                     </article>
                 <?php  endforeach;?>
             </div>
-            <div class="shipping-disclaimer">
-                <h2>Free Standard Delivery</h2>
-                <p>When you spend over €50</p>
-            </div>
-            <div class="products-grid">
 
-                
-    
-            </div>
         </section>
     </main>
 
     <?php include 'newsletter.php'; ?>
 
     <?php include 'footer.php'; ?>
+
+    <script src="js/filter.js"></script>
 </body>
 </html>

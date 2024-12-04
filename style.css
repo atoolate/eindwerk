@@ -395,7 +395,6 @@ footer {
 }
 
 .dropdown-content {
-    /* display: none; */
     position: absolute;
     text-align: left;
     background-color: var(--c-white);
@@ -404,6 +403,10 @@ footer {
     z-index: 1;
     border-radius: 12px;
     padding: 1em;
+}
+
+.hidden {
+    display: none;
 }
 
 .dropdown-content li {
