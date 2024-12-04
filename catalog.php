@@ -8,6 +8,10 @@
     $products = $product->getAll(); 
     $products = $product->getAllWithData();
 
+    // Get all categories
+    $category = new Category();
+    $categories = $category->getAll();
+
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -35,22 +39,21 @@
             <h1>Shop all</h1>
         </div>
 
+
         <section class="products">
             <div class="products-header">
                 <h3 class="total-items"><?php echo Product::getTotalAmount(); ?> Items</h3>
-                <div id="style">
-                    <a class="dropdown" href="#">
+                <div class="dropdown" id="style">
+                    <a href="#" class="dropdown-title">
                         <p>Style</p>
                         <i class="fa-solid fa-chevron-down"></i>
                     </a>
+                    <ul class="dropdown-content">
+                        <?php foreach($categories as $category): ?>
+                            <li id="<?php echo $category['id'] ?>"><?php echo $category['name']; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
-                <div id="strength">
-                    <a class="dropdown" href="#">
-                        <p>Strength</p>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </a>
-                </div>
-                <!-- eventueel nog sorteren en andere weergave bij bouwen -->
             </div>
             <div class="products-grid">
                 <!-- foreach loop over de producten -->                 

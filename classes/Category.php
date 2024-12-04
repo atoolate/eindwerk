@@ -26,8 +26,8 @@ class Category {
 
     // Get all categories
     public function getAll() {
-        $db = new Database();
-        $conn = $db->getConnection();
+        $conn = Db::getConnection();
+        $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         $stmt = $conn->prepare("SELECT * FROM categories");
         $stmt->execute();
@@ -38,8 +38,9 @@ class Category {
 
     // Get category by ID
     public function getById($id) {
-        $db = new Database();
-        $conn = $db->getConnection();
+        $conn = Db::getConnection();
+        $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    
 
         $stmt = $conn->prepare("SELECT * FROM categories WHERE id = :id");
         $stmt->bindParam(':id', $id);
@@ -51,8 +52,9 @@ class Category {
 
     // function to get the variants for this category_id from table category_variants
     public function getVariants($category_id) {
-        $db = new Database();
-        $conn = $db->getConnection();
+        $conn = Db::getConnection();
+        $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    
 
         $stmt = $conn->prepare("SELECT * FROM category_variants WHERE category_id = :category_id");
         $stmt->bindParam(':category_id', $category_id);
