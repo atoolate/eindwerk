@@ -95,42 +95,44 @@
                     <p><?php echo $product['volume'] ?>cl</p>
                 </div>
             </div>
+            <section class="order-configurator">
+                <div class="quantity-selector-wrapper">
+                        <div class="quantity-selector">
 
-            <div class="quantity-selector-wrapper">
-                <div class="quantity-selector">
-
-                    <?php foreach ($pricingOptions as $option): ?>
-                        <div class="quantity-row" data-stock="<?php echo $product['stock'] ?>">
-                            <div class="quantity-details">
-                                <p class="quantity"><?php echo $option['quantity']; ?> Beers</p>
-                                <div class="quantity-price">
-                                    <p class="price">€<?php echo number_format($option['total_price'], 2); ?></p>
-                                    <p class="price-per-item">€<?php echo number_format($option['price_per_can'], 2); ?> per beer</p>
+                            <?php foreach ($pricingOptions as $option): ?>
+                                <div class="quantity-row" data-stock="<?php echo $product['stock'] ?>">
+                                    <div class="quantity-details">
+                                        <p class="quantity"><?php echo $option['quantity']; ?> Beers</p>
+                                        <div class="quantity-price">
+                                            <p class="price">€<?php echo number_format($option['total_price'], 2); ?></p>
+                                            <p class="price-per-item">€<?php echo number_format($option['price_per_can'], 2); ?> per beer</p>
+                                        </div>
+                                    </div>
+                                    <div class="quantity-controls">
+                                        <button class="decrement">-</button>
+                                        <span class="quantity-value">0</span>
+                                        <button class="increment">+</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="quantity-controls">
-                                <button class="decrement">-</button>
-                                <span class="quantity-value">0</span>
-                                <button class="increment">+</button>
-                            </div>
+                            <?php endforeach; ?>
+
                         </div>
-                    <?php endforeach; ?>
+                    </div>
 
-                </div>
-            </div>
+                    <!-- a div where users can select if they want a glass with their order, only for limited products -->
+                    <?php if (Category::hasGlassOption($product['category_id'])) : ?>
+                        <div class="glass-selector">
+                            <input type="checkbox" id="glass" name="glass" value="glass">
+                            <label for="glass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
+                        </div>
+                    <?php endif; ?>
 
-            <!-- a div where users can select if they want a glass with their order, only for limited products -->
-            <?php if (Category::hasGlassOption($product['category_id'])) : ?>
-                <div class="glass-selector">
-                    <input type="checkbox" id="glass" name="glass" value="glass">
-                    <label for="glass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
-                </div>
-            <?php endif; ?>
-
-            <a href="#" class="btn-primary" id="add-to-cart">
-                <p>Add to cart</p> 
-                <p class="total-price">€0.00</p>
-            </a>
+                    <a href="#" class="btn-primary" id="add-to-cart">
+                        <p>Add to cart</p> 
+                        <p class="total-price">€0.00</p>
+                    </a>
+            </section>
+            
         </div>
     </main>
 
