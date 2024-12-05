@@ -127,10 +127,9 @@
                 </div>
             <?php endif; ?>
 
-            <a href="#" class="btn-primary">
-                <p>Add to cart |</p> 
-                <!-- calculate the total price depending on the amount of products selected -->
-                <!-- output the total price in a p tag -->
+            <a href="#" class="btn-primary" id="add-to-cart">
+                <p>Add to cart</p> 
+                <p class="total-price">€0.00</p>
             </a>
         </div>
     </main>
@@ -141,7 +140,9 @@
 
 
 
-    <script src="js/quantityselector.js"></script>
+    <script src="js/quantitySelector.js"></script>
+    <script src="js/priceCalculator.js"></script>
+
 
 </body>
 </html>

@@ -136,3 +136,9 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+#add-to-cart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
