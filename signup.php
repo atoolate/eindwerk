@@ -32,11 +32,11 @@
         $user->setLastName($last_name);
 
         if ($user->save()) {
-            header('Location: login.php'); // Redirect to login on success
-            exit;
+            echo '<input type="hidden" id="account-created" value="true">';
         } else {
             die("Er is een fout opgetreden bij het registreren."); // Stop execution with an error message
         }
+        
     }
 
 ?><!DOCTYPE html>
@@ -61,17 +61,17 @@
     <!-- Page-specific stylesheet -->
     <link rel="stylesheet" href="login.css">
 
-    <title>Account Aanmaken</title>
+    <title>Create Account</title>
 </head>
 </head>
 <body>
     <div class="login">
         <div class="login-nav">
 
-            <h1>Welkom bij XD Brewery</h1>
+            <h1>Welcome to XD Brewery</h1>
             <a href="index.php">
                 <i class="fas fa-arrow-left"></i>
-                <p>Terug naar de shop</p>
+                <p>Back to shop</p>
             </a>
 
         </div>
@@ -115,6 +115,10 @@
         </form>
 
 
+    </div>
+
+    <div id="popup" class="popup">
+        Account created successfully, redirecting to login page...
     </div>
 
 </body>
@@ -171,7 +175,6 @@
 
         // Clear errors and allow form submission
         errorDivStep2.textContent = "";
-        errorDivStep2.style.display = "none";
     });
 
     // Go back to Step 1
@@ -187,5 +190,26 @@
 
 
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const accountCreated = document.getElementById("account-created");
+        const form = document.getElementById("multi-step-form");
+        const popup = document.getElementById("popup");
+
+        if (accountCreated && accountCreated.value === "true") {
+            form.style.display = "none"; // Hide the for
+            popup.style.display = "block"; // Show the popup
+            setTimeout(() => {
+            }, 1000);
+            setTimeout(() => {
+                popup.style.display = "none"; // Hide the popup after 3 seconds
+                window.location.href = "login.php"; // Redirect to login page
+            }, 4000); // 3 seconds delay
+        }
+    });
+</script>
+
+
 
 </html>

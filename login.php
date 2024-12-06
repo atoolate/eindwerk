@@ -58,10 +58,10 @@
     <div class="login">
         <div class="login-nav">
 
-            <h1>Welkom terug bij XD Brewery</h1>
+            <h1>Welcome back to XD Brewery</h1>
             <a href="index.php">
                 <i class="fas fa-arrow-left"></i>
-                <p>Terug naar de shop</p>
+                <p>Back to shop</p>
             </a>
 
         </div>
@@ -80,15 +80,15 @@
                 <input type="email" name="email" id="email">
             </div>
             <div class="form-element">
-                <label for="password">Wachtwoord</label>
+                <label for="password">Password</label>
                 <input type="password" name="password" id="password">
             </div>
             
-            <button class="cta" type="submit">Inloggen</button>
+            <button class="cta" type="submit">Log in</button>
 
             <div class="login-links">
-                <a href="signup.php">Nog geen account? Registreer hier.</a>
-                <a href="#">Wachtwoord vergeten?</a>
+                <a href="signup.php">No account? Sign up here.</a>
+                <a href="#">Forgot password?</a>
             </div>
             
 
