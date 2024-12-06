@@ -5,6 +5,8 @@
         private $email;
         private $password;
         private $credits = 1000;
+        private $first_name;
+        private $last_name;
 
         // Getters and setters
         public function getEmail()
@@ -43,6 +45,29 @@
                 return $this;
         }
 
+        public function getFirstName()
+        {
+                return $this->first_name;
+        }
+
+        public function setFirstName($first_name)
+        {
+                $this->first_name = $first_name;
+
+                return $this;
+        }
+
+        public function getLastName()
+        {
+                return $this->last_name;
+        }
+
+        public function setLastName($last_name)
+        {
+                $this->last_name = $last_name;
+
+                return $this;
+        }
 
 
         // saven
@@ -52,11 +77,13 @@
                 $conn = Db::getConnection();
                 
                 // Bereid de query voor
-                $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
+                $statement = $conn->prepare("INSERT INTO users (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)");
                 
                 // Bind de waarden
                 $statement->bindValue(":email", $this->email);
                 $statement->bindValue(":password", $this->password);
+                $statement->bindValue(":first_name", $this->first_name);
+                $statement->bindValue(":last_name", $this->last_name);
                 
                 // Voer de query uit
                 return $statement->execute();
