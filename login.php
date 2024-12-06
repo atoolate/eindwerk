@@ -22,8 +22,10 @@
             $_SESSION['email'] = $email;
             header('Location: index.php');
             exit;
-        } else {
-            echo "Er is een fout opgetreden bij het inloggen.";
+        }
+        else {
+            // Set error message if login fails
+            $error = 'Deze combinatie van e-mail en wachtwoord is niet correct.';
         }
 
     }
@@ -53,15 +55,45 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Welkom terug</h1>
-    <h2>Inloggen</h2>
-    <form action="" method="POST">
-        <label for="email">E-mail</label>
-        <input type="email" name="email" id="email">
-        <label for="password">Wachtwoord</label>
-        <input type="password" name="password" id="password">
-        <button type="submit">Inloggen</button>
-    </form>
-    <a href="signup.php">Nog geen account? Registreer hier.</a>
+    <div class="login">
+        <div class="login-nav">
+
+            <h1>Welkom terug bij XD Brewery</h1>
+            <a href="index.php">
+                <i class="fas fa-arrow-left"></i>
+                <p>Terug naar de shop</p>
+            </a>
+
+        </div>
+        
+        
+        <form class="login-form" action="" method="POST">
+            
+            <h2>Log in</h2>
+            <!-- Error div -->
+            <div class="error <?php echo empty($error) ? 'hidden' : ''; ?>">
+                <?php echo $error; ?>
+            </div>
+
+            <div class="form-element">
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div class="form-element">
+                <label for="password">Wachtwoord</label>
+                <input type="password" name="password" id="password">
+            </div>
+            
+            <button class="cta" type="submit">Inloggen</button>
+
+            <div class="login-links">
+                <a href="signup.php">Nog geen account? Registreer hier.</a>
+                <a href="#">Wachtwoord vergeten?</a>
+            </div>
+            
+
+        </form>
+        
+    </div>
 </body>
 </html>
