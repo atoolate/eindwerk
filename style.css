@@ -5,7 +5,8 @@
     --c-beige: #FFDAAC;
     --c-blue: #C5F0FB;
     --font-main: "Lexend Deca", sans-serif;
-    --font-secondary: "Roboto", sans-serif;}
+    --font-secondary: "Roboto", sans-serif;
+}
 
 * {
     margin: 0;
@@ -583,25 +584,6 @@ footer {
     font-size: 1.2rem;
     font-family: var(--font-secondary);
     font-weight: 200;
-}
-
-/* admin dashboard */
-.addProduct {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    width: 100%;
-    margin: 0 auto;
-    padding: 1em 4em;
-}
-
-.addProduct input {
-    padding: 0.5em;
-    border-radius: 12px;
-    border: solid 1px var(--c-black);
-    background-color: var(--c-grey);
-    color: var(--c-black);
-    font-size: 1em;
 }
 
 /* description input field should be 100px starting height, but grow bugher when content grows, no horizontal overflow */
