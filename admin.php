@@ -80,79 +80,84 @@
     
         <h1>Admin Dashboard</h1>
         <p>Welcome, <?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?></p>
-        <a href="logout.php">Logout</a>
+        <a class="btn-secondary" id="logout-admin" href="logout.php">Logout</a>
 
-        <!-- // form to add products to database (tables: title, description, price, image, category id, stock, percentage, volume, tagline) -->
         <div class="admin-page-selector">
-            <h2>Add Product</h2>
-            <h2>Manage Products</h2>
+            <a href="#" id="addProductSelector">Add Product</a>
+            <a href="#" id="manageProductsSelector">Manage Products</a>
         </div>
-        <form class="admin-form" id="addProduct" action="" method="POST" enctype="multipart/form-data">
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title" required>
-            <label for="description">Description</label>
-            <input type="text" name="description" id="description" required>
-            <label for="price">Price</label>
-            <input type="number" name="price" id="price" min="0" step="0.01" required>
-            <label for="image">Image</label>
-            <input type="file" name="images[]" id="image" accept="image/*" multiple>
-            <label for="category_id">Category</label>
-            <select name="category_id" id="category_id" required>
-            <?php foreach ($categories as $category): ?>
-                <option value="<?php echo htmlspecialchars($category['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php echo htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?>
-                </option>
-            <?php endforeach; ?>
-            </select>
-            <label for="stock">Stock</label>
-            <input type="number" name="stock" id="stock" min="0" required>
-            <label for="alcohol">Alcohol Percentage</label>
-            <input type="number" name="alcohol" id="alcohol" min="0" step="0.01" required>
-            <label for="volume">Volume (in Cl) </label>
-            <input type="number" name="volume" id="volume" min="0" step="0.01" required>
-            <label for="tagline">Tagline</label>
-            <input type="text" name="tagline" id="tagline" required>
-            <button class="cta" type="submit">Add Product</button>
-            
-        </form>
+        <section class="admin-dashboard">
+            <!-- // form to add products to database (tables: title, description, price, image, category id, stock, percentage, volume, tagline) -->
+            <form class="admin-form" id="addProduct" action="" method="POST" enctype="multipart/form-data">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" id="title" required>
+                        <label for="description">Description</label>
+                        <input type="text" name="description" id="description" required>
+                        <label for="price">Price</label>
+                        <input type="number" name="price" id="price" min="0" step="0.01" required>
+                        <label for="image">Image</label>
+                        <input type="file" name="images[]" id="image" accept="image/*" multiple>
+                        <label for="category_id">Category</label>
+                        <select name="category_id" id="category_id" required>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo htmlspecialchars($category['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endforeach; ?>
+                        </select>
+                        <label for="stock">Stock</label>
+                        <input type="number" name="stock" id="stock" min="0" required>
+                        <label for="alcohol">Alcohol Percentage</label>
+                        <input type="number" name="alcohol" id="alcohol" min="0" step="0.01" required>
+                        <label for="volume">Volume (in Cl) </label>
+                        <input type="number" name="volume" id="volume" min="0" step="0.01" required>
+                        <label for="tagline">Tagline</label>
+                        <input type="text" name="tagline" id="tagline" required>
+                        <button class="cta" type="submit">Add Product</button>
+                        
+            </form>
 
-        <div class="products-grid">
-                <!-- foreach loop over de producten -->                 
-                <?php foreach($products as $product): ?>
-                    
-                    <article class="product-card" data-category-id="<?php echo $product['category_id'] ?>">
-                        <div class="product-content">
-                            <span class="product-tag hidden">Best Seller</span>
-                            <a class="product-image-wrapper" href="productpage.php">
-                                <img class="product-image" src="<?php echo $product['images'] ?>" alt="<?php echo $product['title'] ?>">
-                            </a>
-                            <div class="product-details">
-                                <h3 class="product-title"> <?php echo $product['title']?> </h3>
-                                <p class="product-keywords"><?php echo $product['tagline'] ?></p>
-                                <div class="product-specifications">
-                                    <p class="specifications-outside"><?php echo $product['alcohol'] ?>%</p>
-                                    <p class="specification-middle"><?php echo $product['category_name']; ?></p>
-                                    <p class="specifications-outside"><?php echo $product['volume'] ?>ml</p>
+            <!-- product selector to manage products in database -->
+            <div class="products-grid">
+                    <!-- foreach loop over de producten -->                 
+                    <?php foreach($products as $product): ?>
+                        
+                        <article class="product-card" data-category-id="<?php echo $product['category_id'] ?>">
+                            <div class="product-content">
+                                <span class="product-tag hidden">Best Seller</span>
+                                <a class="product-image-wrapper" href="productpage.php">
+                                    <img class="product-image" src="<?php echo $product['images'] ?>" alt="<?php echo $product['title'] ?>">
+                                </a>
+                                <div class="product-details">
+                                    <h3 class="product-title"> <?php echo $product['title']?> </h3>
+                                    <p class="product-keywords"><?php echo $product['tagline'] ?></p>
+                                    <div class="product-specifications">
+                                        <p class="specifications-outside"><?php echo $product['alcohol'] ?>%</p>
+                                        <p class="specification-middle"><?php echo $product['category_name']; ?></p>
+                                        <p class="specifications-outside"><?php echo $product['volume'] ?>ml</p>
+                                    </div>
+                                </div>
+                                <div class="product-cta">
+                                    <p class="product-price">From <span id="price-unit">€<?php echo $product['price'] ?></span> per can</p>
+                                    <div class="product-btns">
+                                        <!-- met javascript hoeveelheid scherm popup -->
+                                        <a class="cta" id="edit" href="edit.php?id=<?php echo $product['id']; ?>">Edit</a>
+                                        <a class="cta" id="delete" href="delete.php?id=<?php echo $product['id']; ?>">Delete</a>
+
+                                    </div>
                                 </div>
                             </div>
-                            <div class="product-cta">
-                                <p class="product-price">From <span id="price-unit">€<?php echo $product['price'] ?></span> per can</p>
-                                <div class="product-btns">
-                                    <!-- met javascript hoeveelheid scherm popup -->
-                                    <a class="cta" id="edit" href="edit.php?id=<?php echo $product['id']; ?>">Edit</a>
-                                    <a class="cta" id="delete" href="delete.php?id=<?php echo $product['id']; ?>">Delete</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                <?php  endforeach;?>
+                        </article>
+                    <?php  endforeach;?>
             </div>
+        </section>
+        
          
     </main>
 
 
+    <script src="js/adminPageSelector.js"></script>
    
-<script src="js/adminPopups.js"></script>
+    <script src="js/adminPopups.js"></script>
 </body>
 </html>
