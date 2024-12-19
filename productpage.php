@@ -148,8 +148,8 @@
 
 
 
-    <script src="js/quantitySelector.js"></script>
-    <script src="js/priceCalculator.js"></script>
+    <script src="/js/quantitySelector.js"></script>
+    <script src="/js/priceCalculator.js"></script>
 
 
 </body>
