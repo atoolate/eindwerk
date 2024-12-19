@@ -149,7 +149,7 @@
 
 
     <script src="js/priceCalculator.js"></script>
-    <script src="js/quantitySelector.js"></script>
+    <script src="js/selectQuantity.js"></script>
 
 
 </body>
