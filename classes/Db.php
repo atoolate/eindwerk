@@ -7,7 +7,7 @@
         public static function getConnection() {
             if (self::$conn === null) {
                 // self::$conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
-                self::$conn = new PDO("mysql:host=autorack.proxy.rlwy.net;port=17590;dbname=railway", "root", "dEOIGgtjaVVqVaeLHtVxvgAMvUQfFAum");
+                self::$conn = new PDO("mysql.railway.internal;dbname=railway", "root", "dEOIGgtjaVVqVaeLHtVxvgAMvUQfFAum");
                 return self::$conn;
             }
             else {
