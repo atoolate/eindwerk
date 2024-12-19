@@ -19,22 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
         totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
     }
 
-    // Ensure event listeners are attached only once
+    // Add event listeners for each row
     quantityRows.forEach(row => {
         const decrementButton = row.querySelector(".decrement");
         const incrementButton = row.querySelector(".increment");
         const quantityValue = row.querySelector(".quantity-value");
-
-        // Remove any existing event listeners to avoid duplicate bindings
-        decrementButton.replaceWith(decrementButton.cloneNode(true));
-        incrementButton.replaceWith(incrementButton.cloneNode(true));
 
         // Add event listener for decrement button
         decrementButton.addEventListener("click", () => {
             let currentValue = parseInt(quantityValue.textContent); // Get current value
             if (currentValue > 0) { // Ensure quantity doesn't go below 0
                 quantityValue.textContent = currentValue - 1;
-                calculateTotalPrice(); // Update total price
+                calculateTotalPrice(); // Recalculate total price
             }
         });
 
@@ -42,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         incrementButton.addEventListener("click", () => {
             let currentValue = parseInt(quantityValue.textContent); // Get current value
             quantityValue.textContent = currentValue + 1; // Increment value
-            calculateTotalPrice(); // Update total price
+            calculateTotalPrice(); // Recalculate total price
         });
     });
 
