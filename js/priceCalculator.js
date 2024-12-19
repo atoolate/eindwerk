@@ -19,29 +19,30 @@ document.addEventListener("DOMContentLoaded", () => {
         totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
     }
 
-    // Attach event listeners to quantity buttons
+    // Ensure event listeners are attached only once
     quantityRows.forEach(row => {
         const decrementButton = row.querySelector(".decrement");
         const incrementButton = row.querySelector(".increment");
         const quantityValue = row.querySelector(".quantity-value");
 
-        // Remove existing event listeners (optional safety check)
+        // Remove any existing event listeners to avoid duplicate bindings
         decrementButton.replaceWith(decrementButton.cloneNode(true));
         incrementButton.replaceWith(incrementButton.cloneNode(true));
 
-        // Attach updated event listeners
-        row.querySelector(".decrement").addEventListener("click", () => {
+        // Add event listener for decrement button
+        decrementButton.addEventListener("click", () => {
             let currentValue = parseInt(quantityValue.textContent); // Get current value
             if (currentValue > 0) { // Ensure quantity doesn't go below 0
-                quantityValue.textContent = currentValue - 1; // Update DOM
-                calculateTotalPrice(); // Recalculate after update
+                quantityValue.textContent = currentValue - 1;
+                calculateTotalPrice(); // Update total price
             }
         });
 
-        row.querySelector(".increment").addEventListener("click", () => {
+        // Add event listener for increment button
+        incrementButton.addEventListener("click", () => {
             let currentValue = parseInt(quantityValue.textContent); // Get current value
-            quantityValue.textContent = currentValue + 1; // Update DOM
-            calculateTotalPrice(); // Recalculate after update
+            quantityValue.textContent = currentValue + 1; // Increment value
+            calculateTotalPrice(); // Update total price
         });
     });
 
