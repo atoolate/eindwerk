@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const decrement = row.querySelector('.decrement');
         const increment = row.querySelector('.increment');
         const quantityValue = row.querySelector('.quantity-value');
+        let currentValue = 0;
 
         // Add event listener for decrement button
         decrement.addEventListener('click', () => {
