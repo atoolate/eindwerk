@@ -1,7 +1,6 @@
 <?php 
     namespace Alex\Eindwerk;
-    include_once(__DIR__ . '/vendor/autoload.php');
-    
+    require_once __DIR__ . '/classes/autoload.php';
     // Start de sessie om toegang te krijgen tot gebruikersgegevens
     session_start();
 
