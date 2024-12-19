@@ -23,12 +23,23 @@ document.addEventListener("DOMContentLoaded", () => {
     quantityRows.forEach(row => {
         const decrementButton = row.querySelector(".decrement");
         const incrementButton = row.querySelector(".increment");
+        const quantityValue = row.querySelector(".quantity-value");
 
-        decrementButton.addEventListener("click", calculateTotalPrice);
-        incrementButton.addEventListener("click", calculateTotalPrice);
+        decrementButton.addEventListener("click", () => {
+            let currentValue = parseInt(quantityValue.textContent); // Get current value
+            if (currentValue > 0) { // Ensure quantity doesn't go below 0
+                quantityValue.textContent = currentValue - 1; // Update DOM
+                calculateTotalPrice(); // Recalculate after update
+            }
+        });
+
+        incrementButton.addEventListener("click", () => {
+            let currentValue = parseInt(quantityValue.textContent); // Get current value
+            quantityValue.textContent = currentValue + 1; // Update DOM
+            calculateTotalPrice(); // Recalculate after update
+        });
     });
 
     // Initial calculation
     calculateTotalPrice();
 });
-
