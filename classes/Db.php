@@ -3,15 +3,23 @@
 
     class Db {
         private static $conn;
-
+    
         public static function getConnection() {
             if (self::$conn === null) {
-                // self::$conn = new \PDO("mysql:host=localhost;dbname=2xd-final-store", "root", "root");
-                self::$conn = new \PDO("mysql.railway.internal;dbname=railway", "root", "dEOIGgtjaVVqVaeLHtVxvgAMvUQfFAum");
-                return self::$conn;
+                try {
+                    // Correct DSN format: mysql:host=hostname;port=port;dbname=database_name
+                    self::$conn = new \PDO(
+                        "mysql:host=mysql.railway.internal;port=3306;dbname=railway", 
+                        "root", 
+                        "dEOIGgtjaVVqVaeLHtVxvgAMvUQfFAum"
+                    );
+                    self::$conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                    return self::$conn;
+                } catch (\PDOException $e) {
+                    die("Connection failed: " . $e->getMessage());
+                }
             }
-            else {
-                return self::$conn;
-            }
+            return self::$conn;
         }
     }
+    
