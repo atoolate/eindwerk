@@ -64,6 +64,7 @@
                         <i class="fa-solid fa-chevron-down"></i>
                     </a>
                     <ul class="dropdown-content hidden">
+                        <li id="All">All</li>
                         <?php foreach($categories as $category): ?>
                             <li id="<?php echo $category['id'] ?>"><?php echo $category['name']; ?></li>
                         <?php endforeach; ?>

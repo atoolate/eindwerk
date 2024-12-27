@@ -31,10 +31,17 @@ dropdownContent.addEventListener('click', (e) => {
             // Show or hide products based on selected category
             if (productCategoryId === categoryId) {
                 product.style.display = 'block';
-            } else {
+            } 
+            else {
                 product.style.display = 'none';
             }
         });
+        // Show all products if "All" is selected
+        if (categoryId === 'All') {
+            productCards.forEach(product => {
+            product.style.display = 'block';
+            });
+        }
 
         // Update the total items
         updateTotalItems();
