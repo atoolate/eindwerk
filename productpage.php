@@ -105,25 +105,25 @@
                 <div class="quantity-selector-wrapper">
                         <div class="quantity-selector">
 
-                            <?php foreach ($pricingOptions as $option): ?>
-                                <div class="quantity-row" data-stock="<?php echo $product['stock'] ?>">
-                                    <div class="quantity-details">
-                                        <p class="quantity"><?php echo $option['quantity']; ?> Beers</p>
-                                        <div class="quantity-price">
-                                            <p class="price">€<?php echo number_format($option['total_price'], 2); ?></p>
-                                            <p class="price-per-item">€<?php echo number_format($option['price_per_can'], 2); ?> per beer</p>
-                                        </div>
-                                    </div>
-                                    <div class="quantity-controls">
-                                        <button class="decrement">-</button>
-                                        <span class="quantity-value">0</span>
-                                        <button class="increment">+</button>
+                            
+                            <div class="quantity-row">
+                                <div class="quantity-details">
+                                    <p class="quantity">Quantity</p>
+                                    <div class="quantity-price">
+                                        <p class="price">€<?php echo number_format($pricePerCan, 2); ?></p>
+                                        <p class="price-per-item">€<?php echo number_format($pricePerCan, 2); ?> per beer</p>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
+                                <div class="quantity-controls">
+                                    <button class="decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="increment">+</button>
+                                </div>
+                            </div>
+                
 
                         </div>
-                    </div>
+                </div>
 
                     <!-- a div where users can select if they want a glass with their order, only for limited products -->
                     <?php if (Category::hasGlassOption($product['category_id'])) : ?>
@@ -133,10 +133,23 @@
                         </div>
                     <?php endif; ?>
 
-                    <a href="#" class="btn-primary" id="add-to-cart">
+                    <!-- <a href="#" class="btn-primary" id="add-to-cart">
                         <p>Add to cart</p> 
                         <p class="total-price">€0.00</p>
-                    </a>
+                    </a> -->
+
+                    <form method="POST" action="cart.php">
+                        <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
+                        <input type="hidden" name="title" value="<?php echo htmlspecialchars($product['title'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
+                        <input type="hidden" name="selected_package" id="selected-package" value="">
+                        <input type="hidden" name="quantity" value="1" id="quantity-input">
+                        <!-- disable button if quantity is 0 -->
+                        <button type="submit" class="btn-primary" id="add-to-cart" name="add_to_cart">
+                            <p>Add to cart</p> 
+                            <p class="total-price">€0.00</p>
+                        </button>
+                    </form>
             </section>
             
         </div>
@@ -147,6 +160,7 @@
     <?php include 'footer.php'; ?>
 
 
+    <script src="js/quantitySelector.js"></script>
 
     <script src="js/priceCalculator.js"></script>
 

@@ -1,47 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
     const quantityRows = document.querySelectorAll(".quantity-row");
+    const quantityInput = document.getElementById("quantity-input");
     const totalPriceElement = document.querySelector(".total-price");
 
-    // Function to calculate the total price
     function calculateTotalPrice() {
         let totalPrice = 0;
 
         quantityRows.forEach(row => {
-            const quantity = parseInt(row.querySelector(".quantity-value").textContent); // Current quantity
+            const quantity = parseInt(row.querySelector(".quantity-value").textContent); // Get the current quantity
             const pricePerItem = parseFloat(
                 row.querySelector(".price").textContent.replace("€", "").trim()
-            ); // Price per item
+            ); // Parse price
 
-            totalPrice += quantity * pricePerItem; // Add to total price
+            totalPrice += quantity * pricePerItem; // Calculate total price
         });
 
-        // Update the total price in the DOM
-        totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
+        totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`; // Update total price display
     }
 
-    // Add event listeners for each row
     quantityRows.forEach(row => {
         const decrementButton = row.querySelector(".decrement");
         const incrementButton = row.querySelector(".increment");
         const quantityValue = row.querySelector(".quantity-value");
 
-        // Add event listener for decrement button
         decrementButton.addEventListener("click", () => {
-            let currentValue = parseInt(quantityValue.textContent); // Get current value
-            if (currentValue > 0) { // Ensure quantity doesn't go below 0
+            let currentValue = parseInt(quantityValue.textContent);
+            if (currentValue > 0) {
                 quantityValue.textContent = currentValue - 1;
-                calculateTotalPrice(); // Recalculate total price
+                quantityInput.value = currentValue - 1;
+                calculateTotalPrice();
             }
         });
 
-        // Add event listener for increment button
         incrementButton.addEventListener("click", () => {
-            let currentValue = parseInt(quantityValue.textContent); // Get current value
-            quantityValue.textContent = currentValue + 1; // Increment value
-            calculateTotalPrice(); // Recalculate total price
+            let currentValue = parseInt(quantityValue.textContent);
+            quantityValue.textContent = currentValue + 1;
+            quantityInput.value = currentValue + 1;
+            calculateTotalPrice();
         });
     });
 
-    // Initial calculation
-    calculateTotalPrice();
+    calculateTotalPrice(); // Initial calculation
 });

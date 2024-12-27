@@ -13,7 +13,7 @@
                 </div>
                 <a href="index.php"><img id="logo" src="./images/xDbrewery-logo.png" alt="logo"></a>
                 <div class="navbar-user">
-                    <a class="navbar-a" id="cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <a class="navbar-a" id="cart" href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
                     <?php if (isset($_SESSION['email'])): ?>
                         <div class="profile-dropdown">
                             <a class="navbar-a" id="profile-dropdown" href="#">
