@@ -281,8 +281,43 @@ class Product {
         }
     }
 
-    
-    
+    // search for products by title or decription
+    public static function search($query) {
+        try {
+            $conn = Db::getConnection();
+            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            $statement = $conn->prepare("
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(pi.image_path) AS images,
+                    c.name AS category_name
+                FROM 
+                    products p
+                LEFT JOIN 
+                    product_images pi
+                ON 
+                    p.id = pi.product_id
+                LEFT JOIN 
+                    categories c
+                ON 
+                    p.category_id = c.id
+                WHERE 
+                    p.title LIKE :query
+                OR 
+                    p.description LIKE :query
+                GROUP BY 
+                    p.id
+            ");
+            $statement->bindValue(':query', "%$query%", \PDO::PARAM_STR);
+            $statement->execute();
+
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log("Error searching for products: " . $e->getMessage());
+            return [];
+        }
+    }
     
 
 

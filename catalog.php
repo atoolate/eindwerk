@@ -12,6 +12,13 @@
     $category = new Category();
     $categories = $category->getAll();
 
+    // display products if search query is set
+    if (isset($_GET['query'])) {
+        $products = $product->search($_GET['query']);
+    }
+    else {
+        $products = $product->getAllWithData();
+    }
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -62,6 +69,14 @@
                         <?php endforeach; ?>
                     </ul>
                 </div>
+                <!-- search bar -->
+                <form action="catalog.php" method="GET" class="search-bar">
+                    <input type="text" name="query" placeholder="Search products..." required>
+                    <button type="submit">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </form>
+
             </div>
 
             <div class="products-grid">
