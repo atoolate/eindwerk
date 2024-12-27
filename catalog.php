@@ -73,9 +73,6 @@
                 <!-- search bar -->
                 <form action="catalog.php" method="GET" class="search-bar">
                     <input type="text" name="query" placeholder="Search products..." required>
-                    <button type="submit">
-                        <i class="fa-solid fa-search"></i>
-                    </button>
                 </form>
 
             </div>
@@ -102,9 +99,7 @@
                             <div class="product-cta">
                                 <p class="product-price">From <span id="price-unit">€<?php echo $product['price'] ?></span> per can</p>
                                 <div class="product-btns">
-                                    <!-- met javascript hoeveelheid scherm popup -->
-                                    <a class="btn-primary" href="#">Add to basket</a>
-                                    <a class="btn-secondary" href="productpage.php?id=<?php echo $product['id']; ?>">Details</a>
+                                    <a class="btn-primary" href="productpage.php?id=<?php echo $product['id']; ?>">Buy Now</a>
 
                                 </div>
                             </div>
