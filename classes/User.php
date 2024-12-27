@@ -174,5 +174,22 @@
                 return false;
             }
         }
+
+        public static function getUserByEmail($email) {
+            try {
+                $conn = Db::getConnection();
+        
+                // Zoek naar de gebruiker in de database
+                $query = $conn->prepare("SELECT * FROM users WHERE email = :email");
+                $query->bindValue(":email", $email);
+                $query->execute();
+        
+                return $query->fetch(\PDO::FETCH_ASSOC);
+            } catch (\PDOException $e) {
+                // Foutmelding loggen of tonen
+                error_log("Fout bij inloggen: " . $e->getMessage());
+                return false;
+            }
+        }
     }
 

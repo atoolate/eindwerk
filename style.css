@@ -121,7 +121,7 @@ main {
 }
 
 /* Ensure proper spacing and alignment for the dropdown link */
-#logout-menu a {
+#logout-menu a, .profile-dropdown-item {
     text-decoration: none;
     color: #333; /* Adjust for readability */
     display: block; /* Full width clickable area */
@@ -137,7 +137,7 @@ main {
     display: block;
 }
 
-#logout {
+#logout, .profile-dropdown-item {
     font-size: 0.8rem;
     color: var(--c-black);
     font-weight: bold;

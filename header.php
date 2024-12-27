@@ -2,6 +2,9 @@
     namespace Alex\Eindwerk;
     include_once(__DIR__ . '/vendor/autoload.php');
 
+    $user = User::getUserByEmail($_SESSION['email']);
+
+
 ?><header>
         <section class="notifications">
             <h3>📦 FREE shipping on orders over €50 📦</h3>
@@ -22,6 +25,9 @@
                             </a>
                             <div id="logout-menu" class="hidden">
                                 <a id="logout" href="logout.php">Logout?</a>
+                                <p class="profile-dropdown-item">Credits: 
+                                    <?php echo $user['credits'];?>
+                                </p>
                             </div>
                         </div>
                     <?php else: ?>
