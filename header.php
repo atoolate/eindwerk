@@ -2,8 +2,13 @@
     namespace Alex\Eindwerk;
     include_once(__DIR__ . '/vendor/autoload.php');
 
-    $user = User::getUserByEmail($_SESSION['email']);
 
+    if (isset($_SESSION['email'])) {
+        $user = User::getUserByEmail($_SESSION['email']);
+    }
+    else {
+        $user = null;
+    }
 
 ?><header>
         <section class="notifications">

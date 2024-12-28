@@ -7,6 +7,7 @@
         private $credits = 1000;
         private $first_name;
         private $last_name;
+        private $user_id;
 
         // Getters and setters
         public function getEmail()
@@ -68,6 +69,19 @@
 
                 return $this;
         }
+
+        public function getUserId()
+        {
+                return $this->user_id;
+        }
+
+        public function setUserId($user_id)
+        {
+                $this->user_id = $user_id;
+
+                return $this;
+        }
+
 
 
         // saven
@@ -178,18 +192,45 @@
         public static function getUserByEmail($email) {
             try {
                 $conn = Db::getConnection();
-        
-                // Zoek naar de gebruiker in de database
                 $query = $conn->prepare("SELECT * FROM users WHERE email = :email");
-                $query->bindValue(":email", $email);
+                $query->bindValue(":email", $email, \PDO::PARAM_STR);
                 $query->execute();
+                $result = $query->fetch(\PDO::FETCH_ASSOC);
         
-                return $query->fetch(\PDO::FETCH_ASSOC);
+                if ($result) {
+                    error_log("User found for email: " . $email);
+                    return $result;
+                } else {
+                    error_log("No user found for email: " . $email);
+                    return false;
+                }
             } catch (\PDOException $e) {
-                // Foutmelding loggen of tonen
-                error_log("Fout bij inloggen: " . $e->getMessage());
+                error_log("Error retrieving user by email: " . $e->getMessage());
                 return false;
             }
         }
+        
+        
+
+        // get user id from email
+        public function getUserIdByEmail() {
+            try {
+                $conn = Db::getConnection();
+                $query = $conn->prepare("SELECT id FROM users WHERE email = :email");
+                $query->bindValue(":email", $this->email, \PDO::PARAM_STR);
+                $query->execute();
+                $result = $query->fetch(\PDO::FETCH_ASSOC);
+                
+                if ($result && isset($result['id'])) {
+                    return $result['id']; // Return user ID
+                } else {
+                    throw new \Exception("User ID not found for email: " . $this->email);
+                }
+            } catch (\PDOException $e) {
+                error_log("Error retrieving user ID: " . $e->getMessage());
+                return false;
+            }
+        }
+        
     }
 
