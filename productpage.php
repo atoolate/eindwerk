@@ -63,7 +63,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -125,14 +125,6 @@
                         </div>
                 </div>
 
-                    <!-- a div where users can select if they want a glass with their order, only for limited products -->
-                    <?php if (Category::hasGlassOption($product['category_id'])) : ?>
-                        <div class="glass-selector">
-                            <input type="checkbox" id="glass" name="glass" value="glass">
-                            <label for="glass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
-                        </div>
-                    <?php endif; ?>
-
                     <!-- <a href="#" class="btn-primary" id="add-to-cart">
                         <p>Add to cart</p> 
                         <p class="total-price">€0.00</p>
@@ -142,9 +134,16 @@
                         <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
                         <input type="hidden" name="title" value="<?php echo htmlspecialchars($product['title'], ENT_QUOTES, 'UTF-8'); ?>">
                         <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
-                        <input type="hidden" name="selected_package" id="selected-package" value="">
                         <input type="hidden" name="quantity" value="1" id="quantity-input">
-                        <!-- disable button if quantity is 0 -->
+                        
+                        <!-- a div where users can select if they want a glass with their order, only for limited products -->
+                        <?php if (Category::hasGlassOption($product['category_id'])) : ?>
+                            <div class="glass-selector">
+                                <input type="checkbox" id="withGlass" name="withGlass" value="1">
+                                <label for="withGlass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
+                            </div>                        
+                        <?php endif; ?>
+
                         <button type="submit" class="btn-primary" id="add-to-cart" name="add_to_cart">
                             <p>Add to cart</p> 
                             <p class="total-price">€0.00</p>

@@ -14,7 +14,6 @@ class Order {
     private $firstname;
     private $lastname;
     private $email;
-    private $withGlass;
 
     // Getters and setters
     public function getOrderId() {
@@ -125,15 +124,6 @@ class Order {
         return $this;
     }
 
-    public function getWithGlass() {
-        return $this->withGlass;
-    }
-
-    public function setWithGlass($withGlass) {
-        $this->withGlass = $withGlass;
-        return $this;
-    }
-
     // Methods
 
     public function saveOrder() {
@@ -147,16 +137,15 @@ class Order {
         $street = $this->getStreet();
         $postal_code = $this->getPostalCode();
         $country = $this->getCountry();
-        $with_glass = $this->getWithGlass();
-    
+
         // Ensure user ID and other critical fields are not empty
         if (empty($user_id) || empty($order_date) || empty($total_amount)) {
             throw new \InvalidArgumentException("Missing required fields for saving order.");
         }
     
         $statement = $conn->prepare("
-            INSERT INTO orders (user_id, date, total_amount, status, street, postal_code, country, withGlass) 
-            VALUES (:user_id, :date, :total_amount, :status, :street, :postal_code, :country, :withGlass)
+            INSERT INTO orders (user_id, date, total_amount, status, street, postal_code, country) 
+            VALUES (:user_id, :date, :total_amount, :status, :street, :postal_code, :country)
         ");
         $statement->bindParam(":user_id", $user_id, \PDO::PARAM_INT);
         $statement->bindParam(":date", $order_date, \PDO::PARAM_STR);
@@ -165,7 +154,6 @@ class Order {
         $statement->bindParam(":street", $street, \PDO::PARAM_STR);
         $statement->bindParam(":postal_code", $postal_code, \PDO::PARAM_STR);
         $statement->bindParam(":country", $country, \PDO::PARAM_STR);
-        $statement->bindParam(":withGlass", $with_glass, \PDO::PARAM_BOOL);
     
         if ($statement->execute()) {
             $this->order_id = $conn->lastInsertId();

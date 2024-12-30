@@ -1,41 +1,44 @@
 <?php
-    namespace Alex\Eindwerk;
-    include_once(__DIR__ . '/vendor/autoload.php');
+namespace Alex\Eindwerk;
+include_once(__DIR__ . '/vendor/autoload.php');
 
-    session_start();
+session_start();
 
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+if (isset($_POST['add_to_cart'])) {
+    // Validate and sanitize inputs
+    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+    $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
+    $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
+    $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
+    
+    $withGlass = isset($_POST['withGlass']) ? 1 : 0; // Default to 0 if not selected
+
+
+    if ($title && $product_id && $quantity && $price) {
+        $cartItem = [
+            'title' => $title,
+            'product_id' => $product_id,
+            'quantity' => $quantity,
+            'price' => $price,
+            'withGlass' => $withGlass
+        ];
+
+        $_SESSION['cart'][] = $cartItem;
+        echo $withGlass;
+    } else {
+        error_log("Invalid cart item data: " . json_encode($_POST));
+        echo '<script>alert("Invalid cart item data. Please try again.");</script>';
     }
+}
 
-    if (isset($_POST['add_to_cart'])) {
-        // Validate and sanitize inputs
-        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
-        $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
-        $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
-        $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
-
-        if ($title && $product_id && $quantity && $price) {
-            $cartItem = [
-                'title' => $title,
-                'product_id' => $product_id,
-                'quantity' => $quantity,
-                'price' => $price,
-            ];
-
-            $_SESSION['cart'][] = $cartItem;
-        } else {
-            error_log("Invalid cart item data: " . json_encode($_POST));
-            echo '<script>alert("Invalid cart item data. Please try again.");</script>';
-        }
-    }
-
-    if (isset($_POST['delete'])) {
-        array_splice($_SESSION['cart'], $_POST['delete'], 1);
-    }
-
-?>
-<!DOCTYPE html>
+if (isset($_POST['delete'])) {
+    array_splice($_SESSION['cart'], $_POST['delete'], 1);
+}
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -68,6 +71,9 @@
                         <p><strong>Quantity:</strong> <?php echo htmlspecialchars($cartItem['quantity']); ?></p>
                         <p><strong>Price per item:</strong> €<?php echo number_format($cartItem['price'], 2); ?></p>
                         <p><strong>Total:</strong> €<?php echo number_format($cartItem['price'] * $cartItem['quantity'], 2); ?></p>
+                        <?php if ($cartItem['withGlass']): ?>
+                            <p><strong>With Glass:</strong> Yes</p>
+                        <?php endif; ?>
                     </div>
                     <!-- delete item from cart -->
                     <form action="cart.php" method="post" class="delete-form">

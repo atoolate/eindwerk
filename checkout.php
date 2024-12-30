@@ -37,7 +37,8 @@
         $street = filter_input(INPUT_POST, 'street', FILTER_SANITIZE_STRING);
         $postal_code = filter_input(INPUT_POST, 'postal_code', FILTER_SANITIZE_STRING);
         $country = filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);
-    
+        
+
         if ($firstname && $lastname && $email && $street && $postal_code && $country) {
             // Create a new order
             $order = new Order();
@@ -53,18 +54,20 @@
                 ->setOrderDate(date('Y-m-d H:i:s'));
 
     
+            // Save the order to the database
             if ($order->saveOrder()) {
                 // Create order items
-                foreach ($_SESSION['cart'] as $cartItem) {
+                foreach ($_SESSION['cart'] as $cartItem) {                    
                     $orderItem = new OrderItem();
                     $orderItem->setOrderId($order->getOrderId())
                         ->setProductId($cartItem['product_id'])
                         ->setQuantity($cartItem['quantity'])
-                        ->setPrice($cartItem['price']);
+                        ->setPrice($cartItem['price'])
+                        ->setWithGlass($cartItem['withGlass']);
     
-                    $orderItem->saveOrderItems($order->getOrderId(), $cartItem['product_id'], $cartItem['quantity'], $cartItem['price']);
+                    $orderItem->saveOrderItems($order->getOrderId(), $cartItem['product_id'], $cartItem['quantity'], $cartItem['price'], $cartItem['withGlass']);
                 }
-    
+
                 // Clear the cart
                 $_SESSION['cart'] = [];
     
@@ -78,11 +81,6 @@
             echo '<script>alert("Invalid checkout data. Please try again.");</script>';
         }
     }
-
-
-
-
-
 
 ?><!DOCTYPE html>
 <html lang="en">

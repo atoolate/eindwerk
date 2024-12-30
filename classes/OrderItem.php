@@ -7,6 +7,7 @@ class OrderItem {
     private $product_id;
     private $quantity;
     private $price;
+    private $withGlass;
 
     // Getters and setters
     public function getOrderItemId() {
@@ -54,11 +55,20 @@ class OrderItem {
         return $this;
     }
 
+    public function getWithGlass() {
+        return $this->withGlass;
+    }
+
+    public function setWithGlass($withGlass) {
+        $this->withGlass = $withGlass;
+        return $this;
+    }
+
     // Save the order item to the database
     // save order items method in products_orders table
     // columns are product_id, order_id, quantity, price
 
-    public function saveOrderItems($order_id, $product_id, $quantity, $price) {
+    public function saveOrderItems($order_id, $product_id, $quantity, $price, $withGlass) {
         $conn = Db::getConnection();
     
         // Validate and sanitize inputs before binding
@@ -67,14 +77,24 @@ class OrderItem {
         }
     
         $statement = $conn->prepare("
-            INSERT INTO products_orders (order_id, product_id, quantity, price) 
-            VALUES (:order_id, :product_id, :quantity, :price)
+            INSERT INTO products_orders (order_id, product_id, quantity, price, withGlass) 
+            VALUES (:order_id, :product_id, :quantity, :price, :withGlass)
         ");
         $statement->bindParam(":order_id", $order_id, \PDO::PARAM_INT);
         $statement->bindParam(":product_id", $product_id, \PDO::PARAM_INT);
         $statement->bindParam(":quantity", $quantity, \PDO::PARAM_INT);
         $statement->bindParam(":price", $price, \PDO::PARAM_STR);
+        $statement->bindParam(":withGlass", $withGlass, \PDO::PARAM_INT);
     
         return $statement->execute();
+    }
+
+    // Get all order items for a specific order
+    public static function getOrderItems($order_id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM products_orders WHERE order_id = :order_id");
+        $statement->bindParam(":order_id", $order_id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
