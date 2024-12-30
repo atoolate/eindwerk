@@ -3,6 +3,7 @@ namespace Alex\Eindwerk;
 
 class Order {
     private $order_id;
+    private $product_id;
     private $user_id;
     private $order_date;
     private $total_amount;
@@ -22,6 +23,15 @@ class Order {
 
     public function setOrderId($order_id) {
         $this->order_id = $order_id;
+        return $this;
+    }
+
+    public function getProductId() {
+        return $this->product_id;
+    }
+
+    public function setProductId($product_id) {
+        $this->product_id = $product_id;
         return $this;
     }
 
@@ -157,7 +167,12 @@ class Order {
         $statement->bindParam(":country", $country, \PDO::PARAM_STR);
         $statement->bindParam(":withGlass", $with_glass, \PDO::PARAM_BOOL);
     
-        return $statement->execute();
+        if ($statement->execute()) {
+            $this->order_id = $conn->lastInsertId();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function getAll() {
@@ -166,4 +181,11 @@ class Order {
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public static function getOrdersByUserId($user_id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select * from orders where user_id = :user_id");
+        $statement->bindParam(":user_id", $user_id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

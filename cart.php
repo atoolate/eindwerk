@@ -9,13 +9,25 @@
     }
 
     if (isset($_POST['add_to_cart'])) {
-        $cartItem = [
-            'title' => $_POST['title'],
-            'quantity' => $_POST['quantity'],
-            'price' => $_POST['price'],           
-        ];
+        // Validate and sanitize inputs
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
+        $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
+        $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
 
-        $_SESSION['cart'][] = $cartItem;
+        if ($title && $product_id && $quantity && $price) {
+            $cartItem = [
+                'title' => $title,
+                'product_id' => $product_id,
+                'quantity' => $quantity,
+                'price' => $price,
+            ];
+
+            $_SESSION['cart'][] = $cartItem;
+        } else {
+            error_log("Invalid cart item data: " . json_encode($_POST));
+            echo '<script>alert("Invalid cart item data. Please try again.");</script>';
+        }
     }
 
     if (isset($_POST['delete'])) {
@@ -35,7 +47,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->

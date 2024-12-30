@@ -27,47 +27,59 @@
     
     $_SESSION['user_id'] = $userDetails['id']; // Store user ID in the session
     
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
-        try {
+    // Process the checkout form
+
+    if (isset($_POST['checkout'])) {
+        // Validate and sanitize inputs
+        $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+        $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $street = filter_input(INPUT_POST, 'street', FILTER_SANITIZE_STRING);
+        $postal_code = filter_input(INPUT_POST, 'postal_code', FILTER_SANITIZE_STRING);
+        $country = filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);
+    
+        if ($firstname && $lastname && $email && $street && $postal_code && $country) {
             // Create a new order
             $order = new Order();
-            $order->setUserId($_SESSION['user_id']);
-            $order->setOrderDate(date('Y-m-d H:i:s'));
-            $order->setTotalAmount(array_sum(array_map(
-                fn($cartItem) => $cartItem['price'] * $cartItem['quantity'],
-                $_SESSION['cart']
-            )));
-            $order->setStatus('processing');
-            $order->setStreet($_POST['street']);
-            $order->setPostalCode($_POST['postal_code']);
-            $order->setCountry($_POST['country']);
-            $order->setFirstname($_POST['firstname']);
-            $order->setLastname($_POST['lastname']);
-            $order->setEmail($_POST['email']);
-            $order->setWithGlass(isset($_POST['with_glass']) ? 1 : 0);
+            $order->setUserId($_SESSION['user_id'])
+                ->setFirstname($firstname)
+                ->setLastname($lastname)
+                ->setEmail($email)
+                ->setStreet($street)
+                ->setPostalCode($postal_code)
+                ->setCountry($country)
+                ->setTotalAmount(array_sum(array_map(fn($cartItem) => $cartItem['price'] * $cartItem['quantity'], $_SESSION['cart'])))
+                ->setStatus('pending')
+                ->setOrderDate(date('Y-m-d H:i:s'));
+
     
-            // Save the order in the database
-            $order->saveOrder();
+            if ($order->saveOrder()) {
+                // Create order items
+                foreach ($_SESSION['cart'] as $cartItem) {
+                    $orderItem = new OrderItem();
+                    $orderItem->setOrderId($order->getOrderId())
+                        ->setProductId($cartItem['product_id'])
+                        ->setQuantity($cartItem['quantity'])
+                        ->setPrice($cartItem['price']);
     
-            // Save order items in the database
-            foreach ($_SESSION['cart'] as $cartItem) {
-                $order->saveOrder(
-                    $order->getOrderId(),
-                    $cartItem['title'],
-                    $cartItem['quantity'],
-                    $cartItem['price']
-                );
+                    $orderItem->saveOrderItems($order->getOrderId(), $cartItem['product_id'], $cartItem['quantity'], $cartItem['price']);
+                }
+    
+                // Clear the cart
+                $_SESSION['cart'] = [];
+    
+                echo '<script>alert("Order placed successfully. Thank you for shopping with us!");</script>';
+                echo '<script>window.location.href = "catalog.php";</script>';
+                exit;
+            } else {
+                echo '<script>alert("Failed to place order. Please try again.");</script>';
             }
-    
-            // Empty the cart after successful checkout
-            $_SESSION['cart'] = [];
-            echo '<script>alert("Thank you for your order!");</script>';
-            echo '<script>window.location.href = "confirmation.php";</script>';
-        } catch (\Exception $e) {
-            error_log("Error processing checkout: " . $e->getMessage());
-            echo '<script>alert("An error occurred during checkout. Please try again later.");</script>';
+        } else {
+            echo '<script>alert("Invalid checkout data. Please try again.");</script>';
         }
     }
+
+
 
 
 
@@ -84,7 +96,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
