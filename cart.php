@@ -17,6 +17,11 @@
 
         $_SESSION['cart'][] = $cartItem;
     }
+
+    if (isset($_POST['delete'])) {
+        array_splice($_SESSION['cart'], $_POST['delete'], 1);
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +49,7 @@
     <main class="cart-wrapper">
         <h1>Your Cart</h1>
         <div class="cart-items">
-            <?php foreach ($_SESSION['cart'] as $cartItem): ?>
+            <?php foreach ($_SESSION['cart'] as $key => $cartItem): ?>
                 <div class="cart-item-wrapper">
                     <div class="cart-item">
                         <h2><?php echo htmlspecialchars($cartItem['title']); ?></h2>
@@ -53,8 +58,8 @@
                         <p><strong>Total:</strong> €<?php echo number_format($cartItem['price'] * $cartItem['quantity'], 2); ?></p>
                     </div>
                     <!-- delete item from cart -->
-                    <form action="deleteCartItem.php" method="post" class="delete-form">
-                        <input type="hidden" name="delete" value="true">
+                    <form action="cart.php" method="post" class="delete-form">
+                        <input type="hidden" name="delete" value="<?php echo $key; ?>">
                         <!-- delete trash icon -->
                         <button type="submit" class="delete-button">
                             Remove Product
