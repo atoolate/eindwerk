@@ -70,6 +70,7 @@
 
                 // Clear the cart
                 $_SESSION['cart'] = [];
+                $_SESSION['order_placed'] = true; // Set order_placed key in the session
     
                 echo '<script>alert("Order placed successfully. Thank you for shopping with us!");</script>';
                 echo '<script>window.location.href = "confirmation.php";</script>';

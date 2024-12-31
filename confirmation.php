@@ -1,4 +1,27 @@
 <?php 
+    namespace Alex\Eindwerk;
+    include_once(__DIR__ . '/vendor/autoload.php');
+
+    session_start();
+
+    // Ensure the order is placed successfully, not just accessed directly
+    if (!isset($_SESSION['order_placed']) || !$_SESSION['order_placed']) {
+        echo '<script>alert("Please place an order before accessing this page.");</script>';
+        echo '<script>window.location.href = "catalog.php";</script>';
+        exit;
+    }
+
+    // Unset the order_placed session variable so the user can't access this page again
+    unset($_SESSION['order_placed']);
+
+    // If the user is not logged in, redirect them to login
+    if (!isset($_SESSION['email'])) {
+        echo '<script>alert("Please log in to proceed.");</script>';
+        echo '<script>window.location.href = "login.php";</script>';
+        exit;
+    }
+
+
 
 
 ?><!DOCTYPE html>
