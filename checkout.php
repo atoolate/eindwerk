@@ -40,6 +40,16 @@
         
 
         if ($firstname && $lastname && $email && $street && $postal_code && $country) {
+            // Calculate total amount
+            $totalAmount = array_sum(array_map(fn($cartItem) => $cartItem['price'] * $cartItem['quantity'], $_SESSION['cart']));
+
+            // Check if user has enough credit balance
+            if ($userDetails['credits'] < $totalAmount) {
+                echo '<script>alert("Insufficient credit balance. Please add more funds to your account.");</script>';
+                echo '<script>window.location.href = "profile.php";</script>';
+                exit;
+            }
+
             // Create a new order
             $order = new Order();
             $order->setUserId($_SESSION['user_id'])
@@ -49,13 +59,17 @@
                 ->setStreet($street)
                 ->setPostalCode($postal_code)
                 ->setCountry($country)
-                ->setTotalAmount(array_sum(array_map(fn($cartItem) => $cartItem['price'] * $cartItem['quantity'], $_SESSION['cart'])))
+                ->setTotalAmount($totalAmount)
                 ->setStatus('pending')
                 ->setOrderDate(date('Y-m-d H:i:s'));
 
     
             // Save the order to the database
             if ($order->saveOrder()) {
+                // Deduct the total amount from user's credit balance
+                $newCreditBalance = $userDetails['credits'] - $totalAmount;
+                User::updateCreditBalance($_SESSION['user_id'], $newCreditBalance);
+
                 // Create order items
                 foreach ($_SESSION['cart'] as $cartItem) {                    
                     $orderItem = new OrderItem();

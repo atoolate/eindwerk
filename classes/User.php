@@ -231,6 +231,21 @@
                 return false;
             }
         }
+
+        // updateCreditBalance
+        public static function updateCreditBalance($user_id, $newCreditBalance) {
+            try {
+                $conn = Db::getConnection();
+                $query = $conn->prepare("UPDATE users SET credits = :credits WHERE id = :user_id");
+                $query->bindValue(":credits", $newCreditBalance, \PDO::PARAM_INT);
+                $query->bindValue(":user_id", $user_id, \PDO::PARAM_INT);
+                $query->execute();
+                return true;
+            } catch (\PDOException $e) {
+                error_log("Error updating credit balance: " . $e->getMessage());
+                return false;
+            }
+        }
         
     }
 
