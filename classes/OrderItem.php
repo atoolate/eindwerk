@@ -97,4 +97,32 @@ class OrderItem {
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    // get the names of the products in the order using the order_id and turning all corresponding product_ids in products_orders into product names
+    public static function getOrderItemNames($order_id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("
+            SELECT p.title
+            FROM products_orders po
+            JOIN products p ON po.product_id = p.id
+            WHERE po.order_id = :order_id
+        ");
+        $statement->bindParam(":order_id", $order_id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    // get the quantities of the products in the order using the order_id and turning all corresponding product_ids in products_orders into quantities
+    public static function getOrderItemQuantities($order_id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("
+            SELECT po.quantity
+            FROM products_orders po
+            WHERE po.order_id = :order_id
+        ");
+        $statement->bindParam(":order_id", $order_id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
 }

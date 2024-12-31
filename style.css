@@ -679,3 +679,50 @@ footer {
     margin: 0 4rem;
 }
 
+/* Order History Table */
+.order-history {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1em;
+    padding: 2em 4em;
+}
+
+.order {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 1em 4em;
+    border-radius: 12px;
+    background-color: var(--c-grey);
+    width: 100%;
+}
+
+.order-history table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1em;
+    padding: 2em 1em;
+}
+
+.order-history th, .order-history td {
+    border: 1px solid var(--c-grey);
+    padding: 0.8em;
+    text-align: left;
+}
+
+.order-history th {
+    background-color: var(--c-beige);
+    font-family: var(--font-main);
+    font-weight: 600;
+}
+
+.order-history td {
+    background-color: var(--c-white);
+    font-family: var(--font-secondary);
+}
+
+.order-history tr:nth-child(even) {
+    background-color: var(--c-grey);
+}
+

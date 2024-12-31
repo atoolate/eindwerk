@@ -30,6 +30,7 @@
                             </a>
                             <div id="logout-menu" class="hidden">
                                 <a id="logout" href="logout.php">Logout?</a>
+                                <a href="profile.php" class="profile-dropdown-item" id="profile-page">My Profile</a>
                                 <p class="profile-dropdown-item">Credits: 
                                     <?php echo $user['credits'];?>
                                 </p>
