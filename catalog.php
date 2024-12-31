@@ -50,8 +50,8 @@
         </div>
 
         <div class="shipping-disclaimer">
-                <h2>Free Standard Delivery</h2>
-                <p>When you spend over €50</p>
+                <h2>Free Limited Edition Glass</h2>
+                <p>On all Limited Edition Beers</p>
         </div>
 
 

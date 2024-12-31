@@ -149,3 +149,9 @@
     align-items: center;
     padding: 1rem;
 }
+
+.glass-selector {
+    padding-bottom: 1em;
+    display: flex;
+    gap: 1rem;
+}

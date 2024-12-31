@@ -12,7 +12,7 @@
 
 ?><header>
         <section class="notifications">
-            <h3>📦 FREE shipping on orders over €50 📦</h3>
+            <h3>🍺 FREE glass with all Limited Edition Beers 🍺</h3>
         </section>
         <nav class="navbar">
                 <div class="navbar-links">

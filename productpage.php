@@ -110,8 +110,7 @@
                                 <div class="quantity-details">
                                     <p class="quantity">Quantity</p>
                                     <div class="quantity-price">
-                                        <p class="price">€<?php echo number_format($pricePerCan, 2); ?></p>
-                                        <p class="price-per-item">€<?php echo number_format($pricePerCan, 2); ?> per beer</p>
+                                        <p class="price">€<?php echo number_format($pricePerCan, 2); ?> per beer</p>
                                     </div>
                                 </div>
                                 <div class="quantity-controls">

@@ -665,4 +665,17 @@ footer {
     gap: 1em;
 }
 
+/* confirmation page*/
+
+.confirmation-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    padding: 2em 4em;
+    height: 80vh;
+    background-color: var(--c-grey);
+    border-radius: 12px;
+    margin: 0 4rem;
+}
 

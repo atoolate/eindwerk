@@ -72,7 +72,7 @@
                 $_SESSION['cart'] = [];
     
                 echo '<script>alert("Order placed successfully. Thank you for shopping with us!");</script>';
-                echo '<script>window.location.href = "catalog.php";</script>';
+                echo '<script>window.location.href = "confirmation.php";</script>';
                 exit;
             } else {
                 echo '<script>alert("Failed to place order. Please try again.");</script>';
