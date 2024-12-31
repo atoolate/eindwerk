@@ -44,6 +44,9 @@
             header("Location: catalog.php"); // Redirect back to catalog
             exit();
         }
+
+        // Fetch reviews for the product
+        $reviews = Review::fetchReviews($productId);
     } else {
         // Redirect if no ID is provided
         header("Location: catalog.php");
@@ -77,90 +80,100 @@
 <body>
     <?php include 'header.php'; ?>
 
-    <main class="product-wrapper">
-        <div class="product-image-wrapper">
-            <img class="product-detail-image" src="<?php echo $product['images'] ?>" alt="<?php echo $product['title'] ?>">
-            <!-- add image selectors here -->
-        </div>
-        <div class="product-details">
-            <h1><?php echo $product['title'] ?></h1>
-            <p class="product-tagline"><?php echo $product['tagline'] ?></p>
-            <p class="product-description"><?php echo $product['description'] ?></p>
+    <main>
+        <section class="product-wrapper">
+            <div class="product-content">
+                <div class="product-image-wrapper">
+                    <img class="product-detail-image" src="<?php echo $product['images'] ?>" alt="<?php echo $product['title'] ?>">
+                    <!-- add image selectors here -->
+                </div>
+                <div class="product-details">
+                    <h1><?php echo $product['title'] ?></h1>
+                    <p class="product-tagline"><?php echo $product['tagline'] ?></p>
+                    <p class="product-description"><?php echo $product['description'] ?></p>
 
-            <div class="product-specifications-grid">
-                <div class="specifications-alcohol">
-                    <p class="grid-label">Alcohol</p>
-                    <p><?php echo $product['alcohol'] ?>%</p>
-                </div>
-                <div class="specifications-style">
-                    <p class="grid-label">Style</p>
-                    <p><?php echo $product['category_name'] ?></p>
-                </div>
-                <div class="specifications-volume">
-                    <p class="grid-label">Volume</p>
-                    <p><?php echo $product['volume'] ?>cl</p>
-                </div>
-            </div>
-            <section class="order-configurator">
-                <div class="quantity-selector-wrapper">
-                        <div class="quantity-selector">
-
-                            
-                            <div class="quantity-row">
-                                <div class="quantity-details">
-                                    <p class="quantity">Quantity</p>
-                                    <div class="quantity-price">
-                                        <p class="price">€<?php echo number_format($pricePerCan, 2); ?> per beer</p>
+                    <div class="product-specifications-grid">
+                        <div class="specifications-alcohol">
+                            <p class="grid-label">Alcohol</p>
+                            <p><?php echo $product['alcohol'] ?>%</p>
+                        </div>
+                        <div class="specifications-style">
+                            <p class="grid-label">Style</p>
+                            <p><?php echo $product['category_name'] ?></p>
+                        </div>
+                        <div class="specifications-volume">
+                            <p class="grid-label">Volume</p>
+                            <p><?php echo $product['volume'] ?>cl</p>
+                        </div>
+                    </div>
+                    <section class="order-configurator">
+                        <div class="quantity-selector-wrapper">
+                            <div class="quantity-selector">
+                                <div class="quantity-row">
+                                    <div class="quantity-details">
+                                        <p class="quantity">Quantity</p>
+                                        <div class="quantity-price">
+                                            <p class="price">€<?php echo number_format($pricePerCan, 2); ?> per beer</p>
+                                        </div>
+                                    </div>
+                                    <div class="quantity-controls">
+                                        <button class="decrement">-</button>
+                                        <span class="quantity-value">1</span>
+                                        <button class="increment">+</button>
                                     </div>
                                 </div>
-                                <div class="quantity-controls">
-                                    <button class="decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="increment">+</button>
-                                </div>
                             </div>
-                
-
                         </div>
+
+                        <form method="POST" action="cart.php">
+                            <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
+                            <input type="hidden" name="title" value="<?php echo htmlspecialchars($product['title'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
+                            <input type="hidden" name="quantity" value="1" id="quantity-input">
+                            
+                            <?php if (Category::hasGlassOption($product['category_id'])) : ?>
+                                <div class="glass-selector">
+                                    <input type="checkbox" id="withGlass" name="withGlass" value="1">
+                                    <label for="withGlass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
+                                </div>                        
+                            <?php endif; ?>
+
+                            <button type="submit" class="btn-primary" id="add-to-cart" name="add_to_cart">
+                                <p>Add to cart</p> 
+                                <p class="total-price">€0.00</p>
+                            </button>
+                        </form>
+                    </section>
                 </div>
+            </div>
+        </section>
 
-                    <!-- <a href="#" class="btn-primary" id="add-to-cart">
-                        <p>Add to cart</p> 
-                        <p class="total-price">€0.00</p>
-                    </a> -->
+        <section class="review-section">
+            <h2>Reviews</h2>
+            <div id="reviews">
+                <?php foreach ($reviews as $review): ?>
+                    <div class="review">
+                        <p><strong><?php echo htmlspecialchars($review['author'], ENT_QUOTES, 'UTF-8'); ?></strong></p>
+                        <p><?php echo htmlspecialchars($review['content'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <form id="review-form">
+                <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
+                <label for="review-author">Name:</label>
+                <input type="text" id="review-author" name="author" required>
+                <label for="review-content">Review:</label>
+                <textarea id="review-content" name="content" required></textarea>
+                <button type="submit">Submit Review</button>
+            </form>
 
-                    <form method="POST" action="cart.php">
-                        <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
-                        <input type="hidden" name="title" value="<?php echo htmlspecialchars($product['title'], ENT_QUOTES, 'UTF-8'); ?>">
-                        <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
-                        <input type="hidden" name="quantity" value="1" id="quantity-input">
-                        
-                        <!-- a div where users can select if they want a glass with their order, only for limited products -->
-                        <?php if (Category::hasGlassOption($product['category_id'])) : ?>
-                            <div class="glass-selector">
-                                <input type="checkbox" id="withGlass" name="withGlass" value="1">
-                                <label for="withGlass">With Limited Edition <?php echo $product['title'] ?> Glass</label>
-                            </div>                        
-                        <?php endif; ?>
-
-                        <button type="submit" class="btn-primary" id="add-to-cart" name="add_to_cart">
-                            <p>Add to cart</p> 
-                            <p class="total-price">€0.00</p>
-                        </button>
-                    </form>
-            </section>
-            
-        </div>
+        </section>
     </main>
-
     <?php include 'newsletter.php'; ?>
-
     <?php include 'footer.php'; ?>
-
-
     <script src="js/quantitySelector.js"></script>
-
     <script src="js/priceCalculator.js"></script>
+    <script src="js/reviews.js"></script>
 
 </body>
 </html>
