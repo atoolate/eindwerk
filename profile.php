@@ -45,53 +45,63 @@
 </head>
 <body>
 
-    <h1>My Profile</h1>
-    <p>Welcome, <?php echo $_SESSION['email'] ?></p>
-    
-    <!-- order overview -->
-    <h2>Order History</h2>
+    <?php include 'header.php'; ?>
 
-    <div class="order-history">
-        <?php if ($orders): ?>
-            <?php foreach ($orders as $order): ?>
-                <div class="order">
-                    <p><strong>Order Date:</strong> <?php echo $order['date'] ?></p>
-                    <p><strong>Total Amount:</strong> €<?php echo number_format($order['total_amount'], 2) ?></p>
-                    <p><strong>Shipping: </strong><?php echo $order['street']?> </p>
-                    <p><strong>Status:</strong> <?php echo $order['status'] ?></p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                                $productNames = OrderItem::getOrderItemNames($order['id']);
-                                $productQuantities = OrderItem::getOrderItemQuantities($order['id']);
-                                if (is_array($productNames) && is_array($productQuantities)) {
-                                    foreach ($productNames as $index => $productName) {
-                                        echo '<tr>';
-                                        echo '<td>' . htmlspecialchars($productName) . '</td>';
-                                        echo '<td>' . htmlspecialchars($productQuantities[$index]) . '</td>';
-                                        echo '</tr>';
+    <main class="profile-wrapper">
+
+        <h1>My Profile</h1>
+        <p>Welcome, <?php echo $_SESSION['email'] ?></p>
+        
+        
+
+        <div class="order-history">
+            <!-- order overview -->
+            <h2>Order History</h2>
+
+            <?php if ($orders): ?>
+                <?php usort($orders, function($a, $b) {
+                    return strtotime($b['date']) - strtotime($a['date']);
+                }); ?>
+                <?php foreach ($orders as $order): ?>
+                    <div class="order">
+                        <p><strong>Order Date:</strong> <?php echo $order['date'] ?></p>
+                        <p><strong>Total Amount:</strong> €<?php echo number_format($order['total_amount'], 2) ?></p>
+                        <p><strong>Shipping: </strong><?php echo $order['street']?> </p>
+                        <p><strong>Status:</strong> <?php echo $order['status'] ?></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    $productNames = OrderItem::getOrderItemNames($order['id']);
+                                    $productQuantities = OrderItem::getOrderItemQuantities($order['id']);
+                                    if (is_array($productNames) && is_array($productQuantities)) {
+                                        foreach ($productNames as $index => $productName) {
+                                            echo '<tr>';
+                                            echo '<td>' . htmlspecialchars($productName) . '</td>';
+                                            echo '<td>' . htmlspecialchars($productQuantities[$index]) . '</td>';
+                                            echo '</tr>';
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="2">No products found</td></tr>';
                                     }
-                                } else {
-                                    echo '<tr><td colspan="2">No products found</td></tr>';
-                                }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>No orders found.</p>
-        <?php endif; ?>
-    </div>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No orders found.</p>
+            <?php endif; ?>
+        </div>
+    </main>
 
-    <a href="index.php">Home</a>
-    <a href="logout.php">Logout</a>
+    <?php include 'newsletter.php'; ?>
+    <?php include 'footer.php'; ?>
 
 </body>
 </html>

@@ -28,7 +28,6 @@ if (isset($_POST['add_to_cart'])) {
         ];
 
         $_SESSION['cart'][] = $cartItem;
-        echo $withGlass;
     } else {
         error_log("Invalid cart item data: " . json_encode($_POST));
         echo '<script>alert("Invalid cart item data. Please try again.");</script>';
