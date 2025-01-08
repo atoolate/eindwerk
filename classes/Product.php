@@ -133,40 +133,30 @@ class Product {
     // images should be uploaded into uploads folder
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
-        // Set target directory for uploads
-        $targetDir = "uploads/"; // Relative path
-        $absoluteTargetDir = __DIR__ . "/../" . $targetDir; // Absolute path for file operations
+        // Use a writable directory for Railway
+        $targetDir = "/tmp/uploads/"; // Writable temporary path
         $imagesArray = [];
     
         // Ensure upload directory exists
-        if (!is_dir($absoluteTargetDir)) {
-            if (!mkdir($absoluteTargetDir, 0777, true) && !is_dir($absoluteTargetDir)) {
+        if (!is_dir($targetDir)) {
+            if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
                 throw new \Exception("Failed to create upload directory. Please check the directory permissions.");
             }
         }
     
         foreach ($images['name'] as $key => $name) {
-            // Validate the file as an image
             $tmpName = $images['tmp_name'][$key];
             $check = getimagesize($tmpName);
+    
             if ($check === false) {
-                throw new \Exception("File '$name' is not a valid image.");
+                throw new \Exception("File is not a valid image.");
             }
     
-            // Sanitize filename to prevent security issues
             $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
-            $targetFile = $absoluteTargetDir . $safeName;
+            $targetFile = $targetDir . $safeName;
     
-            // Avoid duplicate filenames
-            if (file_exists($targetFile)) {
-                $safeName = time() . '_' . $safeName;
-                $targetFile = $absoluteTargetDir . $safeName;
-            }
-    
-            // Move file to uploads folder
             if (move_uploaded_file($tmpName, $targetFile)) {
-                // Save the relative path
-                $imagesArray[] = $targetDir . $safeName;
+                $imagesArray[] = 'uploads/' . $safeName; // Relative path
             } else {
                 throw new \Exception("Failed to upload file: " . $safeName . ". Please check the directory permissions.");
             }
