@@ -9,11 +9,11 @@ if (!isset($_SESSION['cart'])) {
 }
 
 if (isset($_POST['add_to_cart'])) {
-    // Validate and sanitize inputs
-    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
-    $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
-    $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
-    $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
+    // inputs from the form
+    $title = $_POST['title'];
+    $product_id = $_POST['product_id'];
+    $quantity = $_POST['quantity'];
+    $price = $_POST['price'];
     
     $withGlass = isset($_POST['withGlass']) ? 1 : 0; // Default to 0 if not selected
 
