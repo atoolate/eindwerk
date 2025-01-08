@@ -41,9 +41,17 @@
             $images = $_FILES['images'];
             $imageUrls = [];
             foreach ($images['tmp_name'] as $index => $tmpName) {
-                $imageUrls[] = Cloudinary::uploadImage($tmpName, $images['name'][$index]);
+                $imageUrls[] = $product->uploadImage([
+                    'tmp_name' => $tmpName,
+                    'name' => $images['name'][$index],
+                    'size' => $images['size'][$index],
+                    'error' => $images['error'][$index]
+                ]);
             }
             
+            // Save image URLs to the database
+            $product->saveProductImages($productId, $images);
+
             //redirect to the same page with a success message
             header("Location: admin.php?message=" . urlencode("Product successfully added."));
             exit;
