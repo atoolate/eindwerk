@@ -13,11 +13,15 @@
     $categories = $category->getAll();
 
     // display products if search query is set
+    // add query as a deletable parameter next to the search bar
     if (isset($_GET['query'])) {
         $products = $product->search($_GET['query']);
     }
-    else {
-        $products = $product->getAllWithData();
+
+    // Clear search query
+    if (isset($_GET['clear'])) {
+        header("Location: catalog.php");
+        exit();
     }
 
 ?><!DOCTYPE html>
@@ -72,7 +76,14 @@
                 </div>
                 <!-- search bar -->
                 <form action="catalog.php" method="GET" class="search-bar">
-                    <input type="text" name="query" placeholder="Search products..." required>
+                    <input type="text" name="query" placeholder="Search products..." value="<?php if(isset($_GET['query'])) echo $_GET['query']; ?>" required>
+                    <!-- add search query as a deletable parameter as a span next to searchbar -->
+                    <?php if(isset($_GET['query'])): ?>
+                        <span class="search-query">
+                            <?php echo $_GET['query']; ?>
+                            <a href="catalog.php?clear=true" class="clear-query">x</a>
+                        </span>
+                    <?php endif; ?>
                 </form>
 
             </div>

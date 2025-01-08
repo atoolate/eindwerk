@@ -120,59 +120,50 @@
 <body>
     <?php include 'header.php'; ?>
 
-    <h1>Checkout</h1>
     <main class="checkout-wrapper">
-        
-        <div class="checkout-info">
-            <form action="checkout.php" method="post" class="checkout-form">
-                <!-- firstname -->
-                <label for="firstname">First Name:</label>
-                <input type="text" id="firstname" name="firstname" required>
-
-                <!-- lastname -->
-                <label for="lastname">Last Name:</label>
-                <input type="text" id="lastname" name="lastname" required>
-
-                <!-- email -->
-                <label for="email">Email:</label>
-                <!-- if email is set in session, auutomatically fill out here -->
-                <input type="email" id="email" name="email" value="<?php echo $_SESSION['email']; ?>" required>
-
-                <!-- Street + number -->
-                <label for="street">Street + Number:</label>
-                <input type="text" id="street" name="street" placeholder="Koekoekstraat 70" required>
-
-                <!-- postal code -->
-                <label for="postal_code">Postal Code:</label>
-                <input type="text" id="postal_code" name="postal_code" placeholder="9090" required>
-
-                <!-- country -->
-                <label for="country">Country:</label>
-                <input type="text" id="country" name="country" required>
-
-                <!-- submit order -->
-                <button type="submit" name="checkout">Submit Order</button>
-
-            </form>
-        </div>
-
-        <!-- show order overview -->
-        <div class="checkout-order">
-            <div class="order-items">
-                <h2>Your Order</h2>
-                <?php foreach ($_SESSION['cart'] as $cartItem): ?>
-                    <div class="order-item">
-                        <h3><?php echo htmlspecialchars($cartItem['title']); ?></h3>
-                        <p><strong>Quantity:</strong> <?php echo htmlspecialchars($cartItem['quantity']); ?></p>
-                        <p><strong>Price per item:</strong> €<?php echo number_format($cartItem['price'], 2); ?></p>                   
-                    </div>
-                <?php endforeach; ?>     
+        <h1>Checkout</h1>
+        <div class="checkout-columns">
+            <div class="checkout-info">
+                <form action="checkout.php" method="post" class="checkout-form">
+                    <!-- firstname -->
+                    <label for="firstname">First Name:</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                    <!-- lastname -->
+                    <label for="lastname">Last Name:</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                    <!-- email -->
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<?php echo $_SESSION['email']; ?>" required>
+                    <!-- Street + number -->
+                    <label for="street">Street + Number:</label>
+                    <input type="text" id="street" name="street" placeholder="Koekoekstraat 70" required>
+                    <!-- postal code -->
+                    <label for="postal_code">Postal Code:</label>
+                    <input type="text" id="postal_code" name="postal_code" placeholder="9090" required>
+                    <!-- country -->
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" required>
+                    <!-- submit order -->
+                    <button type="submit" name="checkout" class="btn-primary" id="checkout-button">Submit Order</button>
+                </form>
             </div>
-            <div class="checkout-total">
-                <h2>Total: €<?php echo number_format(array_sum(array_map(fn($cartItem) => $cartItem['price'] * $cartItem['quantity'], $_SESSION['cart'])), 2); ?></h2>
-            </div>  
+            <!-- show order overview -->
+            <div class="checkout-order">
+                <div class="order-items">
+                    <h2>Your Order</h2>
+                    <?php foreach ($_SESSION['cart'] as $cartItem): ?>
+                        <div class="order-item">
+                            <h3><?php echo htmlspecialchars($cartItem['title']); ?></h3>
+                            <p><strong>Quantity:</strong> <?php echo htmlspecialchars($cartItem['quantity']); ?></p>
+                            <p><strong>Price per item:</strong> €<?php echo number_format($cartItem['price'], 2); ?></p>                   
+                        </div>
+                    <?php endforeach; ?>     
+                </div>
+                <div class="checkout-total">
+                    <h2>Total: €<?php echo number_format(array_sum(array_map(fn($cartItem) => $cartItem['price'] * $cartItem['quantity'], $_SESSION['cart'])), 2); ?></h2>
+                </div>  
+            </div>
         </div>
-                
     </main>
 
     <?php include 'footer.php'; ?>
