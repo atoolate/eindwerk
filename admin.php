@@ -37,10 +37,13 @@
 
         // Save product to database
         if ($productId) {
-            // Save images to database using saveProductImages()
+            // save images to cloudinary
             $images = $_FILES['images'];
-            $product->saveProductImages($productId, $images);
-
+            $imageUrls = [];
+            foreach ($images['tmp_name'] as $index => $tmpName) {
+                $imageUrls[] = Cloudinary::uploadImage($tmpName, $images['name'][$index]);
+            }
+            
             //redirect to the same page with a success message
             header("Location: admin.php?message=" . urlencode("Product successfully added."));
             exit;
