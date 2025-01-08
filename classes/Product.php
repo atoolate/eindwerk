@@ -134,7 +134,7 @@ class Product {
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
         // Persistent volume path
-        $targetDir = "/data/uploads/";
+        $targetDir = "uploads/";
         $imagesArray = [];
     
         // Ensure upload directory exists
@@ -167,7 +167,7 @@ class Product {
             // Move uploaded file
             if (move_uploaded_file($tmpName, $targetFile)) {
                 // Save public-relative path
-                $imagesArray[] = '/uploads/' . $safeName;
+                $imagesArray[] = $targetDir . $safeName;
             } else {
                 throw new \Exception("Failed to upload file: $safeName. Please check directory permissions.");
             }
