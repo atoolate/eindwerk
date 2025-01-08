@@ -5,5 +5,7 @@
             "Alex\\Eindwerk\\": "classes/"
         }
     },
-    "require": {}
+    "require": {
+        "cloudinary/cloudinary_php": "^3.0"
+    }
 }

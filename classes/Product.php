@@ -1,5 +1,9 @@
 <?php
-namespace Alex\Eindwerk;
+namespace Alex\Eindwerk; 
+
+use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 
 class Product {
     private $title;
@@ -133,17 +137,20 @@ class Product {
     // images should be uploaded into uploads folder
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
-        // Persistent volume path
-        $targetDir = "uploads/";
-        $imagesArray = [];
+        // Cloudinary configuration
+        Configuration::instance([
+            'cloud' => [
+                'cloud_name' => 'dqtcj65qr',
+                'api_key'    => 'y375413697912638',
+                'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
+            ],
+            'url' => [
+                'secure' => true
+            ]
+        ]);
     
-        // Ensure upload directory exists
-        if (!is_dir($targetDir)) {
-            if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
-                error_log("Failed to create upload directory at $targetDir. Please check the directory permissions.");
-                throw new \Exception("Failed to create upload directory at $targetDir. Please check the directory permissions.");
-            }
-        }
+        $cloudinary = new Cloudinary();
+        $imagesArray = [];
     
         foreach ($images['name'] as $key => $name) {
             $tmpName = $images['tmp_name'][$key];
@@ -159,21 +166,20 @@ class Product {
                 throw new \Exception("File is not a valid image.");
             }
     
-            // Sanitize filename
-            $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
-            $safeName = time() . '_' . $safeName; // Ensure unique filename
-            $targetFile = $targetDir . $safeName;
+            // Upload to Cloudinary
+            try {
+                $result = (new UploadApi())->upload($tmpName, [
+                    'folder' => 'product_images'
+                ]);
     
-            // Move uploaded file
-            if (move_uploaded_file($tmpName, $targetFile)) {
-                // Save public-relative path
-                $imagesArray[] = $targetDir . $safeName;
-            } else {
-                throw new \Exception("Failed to upload file: $safeName. Please check directory permissions.");
+                // Save the Cloudinary URL
+                $imagesArray[] = $result['secure_url'];
+            } catch (\Exception $e) {
+                throw new \Exception("Failed to upload file to Cloudinary: " . $e->getMessage());
             }
         }
     
-        // Save image paths to database (example)
+        // Save image paths to database
         try {
             $conn = Db::getConnection();
             $conn->beginTransaction();
@@ -218,7 +224,9 @@ class Product {
             $query = "
                 SELECT 
                     p.*, 
-                    GROUP_CONCAT(pi.image_path) AS images,
+                    GROUP_CONCAT(pi.image_name) AS image_names,
+                    GROUP_CONCAT(pi.image_type) AS image_types,
+                    GROUP_CONCAT(pi.image_data) AS image_data,
                     c.name AS category_name
                 FROM 
                     products p
@@ -266,7 +274,9 @@ class Product {
             $query = "
                 SELECT 
                     p.*, 
-                    GROUP_CONCAT(pi.image_path) AS images,
+                    GROUP_CONCAT(pi.image_name) AS image_names,
+                    GROUP_CONCAT(pi.image_type) AS image_types,
+                    GROUP_CONCAT(pi.image_data) AS image_data,
                     c.name AS category_name
                 FROM 
                     products p
