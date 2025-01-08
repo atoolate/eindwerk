@@ -1,9 +1,20 @@
 <?php
 namespace Alex\Eindwerk; 
 
-use Cloudinary\Cloudinary;
-use Cloudinary\Api\Upload\UploadApi;
+// Use the Configuration and UploadApi classes
 use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
+
+Configuration::instance([
+    'cloud' => [
+        'cloud_name' => 'dqtcj65qr',
+        'api_key'    => '375413697912638',
+        'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
+    ],
+    'url' => [
+        'secure' => true
+    ]
+]);
 
 class Product {
     private $title;
@@ -140,56 +151,32 @@ class Product {
         }
     }
 
-    // Save product images to database
-    public function saveProductImages($productId, $images) {
-        $cloudinary = new Cloudinary();
-        $imagesArray = [];
-    
-        foreach ($images['name'] as $key => $name) {
-            $tmpName = $images['tmp_name'][$key];
-    
-            // Validate file upload
-            if ($images['error'][$key] !== UPLOAD_ERR_OK) {
-                throw new \Exception("File upload error: " . $images['error'][$key]);
-            }
-    
-            // Validate the file is an image
-            $check = getimagesize($tmpName);
-            if ($check === false) {
-                throw new \Exception("File is not a valid image.");
-            }
-    
-            // Upload to Cloudinary
-            try {
-                $result = $cloudinary->uploadApi()->upload($tmpName, [
-                    'folder' => 'product_images',
-                ]);
-    
-                // Save the Cloudinary URL
-                $imagesArray[] = $result['secure_url'];
-            } catch (\Exception $e) {
-                throw new \Exception("Failed to upload file to Cloudinary: " . $e->getMessage());
-            }
+    public function uploadImage($file) {
+        // Ensure Cloudinary is configured
+        $this->configureCloudinary();
+
+        // Validate file is an image
+        $check = getimagesize($file["tmp_name"]);
+        if ($check === false) {
+            throw new \Exception('Bestand is geen afbeelding');
         }
-    
-        // Save image paths to database
+
+        // Validate file size (5MB max)
+        if ($file["size"] > 5000000) {
+            throw new \Exception('Sorry, het bestand is te groot');
+        }
+
+        // Upload to Cloudinary
         try {
-            $conn = Db::getConnection();
-            $conn->beginTransaction();
-    
-            $stmt = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
-            foreach ($imagesArray as $imagePath) {
-                $stmt->bindValue(":product_id", $productId);
-                $stmt->bindValue(":image_path", $imagePath);
-                $stmt->execute();
-            }
-    
-            $conn->commit();
-        } catch (\PDOException $e) {
-            if ($conn->inTransaction()) {
-                $conn->rollBack();
-            }
-            throw new \Exception("Error saving image paths to the database: " . $e->getMessage());
+            $uploadResult = (new UploadApi())->upload($file['tmp_name'], [
+                'folder' => 'uploads/', // Optional: Specify folder in Cloudinary
+                'public_id' => pathinfo($file["name"], PATHINFO_FILENAME),
+                'overwrite' => true,
+                'resource_type' => 'image',
+            ]);
+            return $uploadResult['secure_url']; // Return the Cloudinary URL
+        } catch (\Exception $e) {
+            throw new \Exception('Upload to Cloudinary failed: ' . $e->getMessage());
         }
     }
 
