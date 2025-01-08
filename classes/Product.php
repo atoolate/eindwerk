@@ -22,6 +22,19 @@ class Product {
     private $volume;
     private $tagline;
 
+    // Add the configureCloudinary method
+    private function configureCloudinary() {
+        Configuration::instance([
+            'cloud' => [
+                'cloud_name' => 'dqtcj65qr',
+                'api_key'    => '375413697912638',
+                'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
+            ],
+            'url' => [
+                'secure' => true
+            ]
+        ]);
+    }
 
     // Getters and setters
     public function getTitle() {
