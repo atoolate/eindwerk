@@ -133,60 +133,63 @@ class Product {
     // images should be uploaded into uploads folder
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
-        // Use a writable directory for Railway
-        $targetDir = "/tmp/uploads/"; // Writable temporary path
+        // Persistent volume path
+        $targetDir = "/src/data/uploads/";
         $imagesArray = [];
     
         // Ensure upload directory exists
         if (!is_dir($targetDir)) {
             if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
-                throw new \Exception("Failed to create upload directory. Please check the directory permissions.");
+                throw new \Exception("Failed to create upload directory at $targetDir. Please check the directory permissions.");
             }
         }
     
         foreach ($images['name'] as $key => $name) {
             $tmpName = $images['tmp_name'][$key];
-            $check = getimagesize($tmpName);
     
+            // Validate file upload
+            if ($images['error'][$key] !== UPLOAD_ERR_OK) {
+                throw new \Exception("File upload error: " . $images['error'][$key]);
+            }
+    
+            // Validate the file is an image
+            $check = getimagesize($tmpName);
             if ($check === false) {
                 throw new \Exception("File is not a valid image.");
             }
     
+            // Sanitize filename
             $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
+            $safeName = time() . '_' . $safeName; // Ensure unique filename
             $targetFile = $targetDir . $safeName;
     
+            // Move uploaded file
             if (move_uploaded_file($tmpName, $targetFile)) {
-                $imagesArray[] = 'uploads/' . $safeName; // Relative path
+                // Save public-relative path
+                $imagesArray[] = '/uploads/' . $safeName;
             } else {
-                throw new \Exception("Failed to upload file: " . $safeName . ". Please check the directory permissions.");
+                throw new \Exception("Failed to upload file: $safeName. Please check directory permissions.");
             }
         }
     
-        // Save the relative paths to the database
+        // Save image paths to database (example)
         try {
             $conn = Db::getConnection();
-            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    
-            // Start a transaction
             $conn->beginTransaction();
     
-            $statement = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
-    
+            $stmt = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
             foreach ($imagesArray as $imagePath) {
-                $statement->bindValue(":product_id", $productId);
-                $statement->bindValue(":image_path", $imagePath);
-                $statement->execute();
+                $stmt->bindValue(":product_id", $productId);
+                $stmt->bindValue(":image_path", $imagePath);
+                $stmt->execute();
             }
     
-            // Commit the transaction
             $conn->commit();
         } catch (\PDOException $e) {
             if ($conn->inTransaction()) {
                 $conn->rollBack();
             }
-    
-            error_log("Error adding product images: " . $e->getMessage());
-            throw new \Exception("An error occurred while saving product images.");
+            throw new \Exception("Error saving image paths to the database: " . $e->getMessage());
         }
     }
     
