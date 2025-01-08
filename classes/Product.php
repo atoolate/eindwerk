@@ -15,6 +15,20 @@ class Product {
     private $volume;
     private $tagline;
 
+    public function __construct() {
+        // Cloudinary configuration
+        Configuration::instance([
+            'cloud' => [
+                'cloud_name' => 'dqtcj65qr',
+                'api_key'    => 'y375413697912638',
+                'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
+            ],
+            'url' => [
+                'secure' => true
+            ]
+        ]);
+    }
+
     // Getters and setters
     public function getTitle() {
         return $this->title;
@@ -137,18 +151,6 @@ class Product {
     // images should be uploaded into uploads folder
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
-        // Cloudinary configuration
-        Configuration::instance([
-            'cloud' => [
-                'cloud_name' => 'dqtcj65qr',
-                'api_key'    => 'y375413697912638',
-                'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
-            ],
-            'url' => [
-                'secure' => true
-            ]
-        ]);
-    
         $cloudinary = new Cloudinary();
         $imagesArray = [];
     
