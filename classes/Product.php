@@ -23,7 +23,7 @@ class Product {
         Configuration::instance([
             'cloud' => [
                 'cloud_name' => 'dqtcj65qr',
-                'api_key'    => 'y375413697912638',
+                'api_key'    => '375413697912638',
                 'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
             ],
             'url' => [
