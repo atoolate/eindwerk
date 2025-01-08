@@ -140,7 +140,9 @@ class Product {
     
         // Ensure upload directory exists
         if (!is_dir($absoluteTargetDir)) {
-            mkdir($absoluteTargetDir, 0777, true);
+            if (!mkdir($absoluteTargetDir, 0777, true) && !is_dir($absoluteTargetDir)) {
+                throw new \Exception("Failed to create upload directory. Please check the directory permissions.");
+            }
         }
     
         foreach ($images['name'] as $key => $name) {
