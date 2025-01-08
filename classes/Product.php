@@ -16,7 +16,10 @@ class Product {
     private $tagline;
 
     public function __construct() {
-        // Cloudinary configuration
+        $this->configureCloudinary();
+    }
+
+    private function configureCloudinary() {
         Configuration::instance([
             'cloud' => [
                 'cloud_name' => 'dqtcj65qr',
@@ -26,7 +29,7 @@ class Product {
             'url' => [
                 'secure' => true
             ]
-        ]);
+        ])->validate();
     }
 
     // Getters and setters
