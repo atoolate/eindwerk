@@ -1,8 +1,9 @@
 <?php
 namespace Alex\Eindwerk; 
 
-// Use the Configuration and UploadApi classes
+// Use the Configuration, Cloudinary, and UploadApi classes
 use Cloudinary\Configuration\Configuration;
+use Cloudinary\Cloudinary;
 use Cloudinary\Api\Upload\UploadApi;
 
 Configuration::instance([
