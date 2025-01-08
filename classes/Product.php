@@ -134,12 +134,13 @@ class Product {
     // save the path of the image in the database
     public function saveProductImages($productId, $images) {
         // Persistent volume path
-        $targetDir = "/src/data/uploads/";
+        $targetDir = "/data/uploads/";
         $imagesArray = [];
     
         // Ensure upload directory exists
         if (!is_dir($targetDir)) {
             if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
+                error_log("Failed to create upload directory at $targetDir. Please check the directory permissions.");
                 throw new \Exception("Failed to create upload directory at $targetDir. Please check the directory permissions.");
             }
         }
