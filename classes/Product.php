@@ -2,16 +2,6 @@
 namespace Alex\Eindwerk; 
 include_once(__DIR__ . '/../vendor/autoload.php');
 
-
-// Use the Configuration, Cloudinary, and UploadApi classes
-use Cloudinary\Cloudinary;
-use Cloudinary\Configuration\Configuration;
-use Cloudinary\Api\Upload\UploadApi;
-
-
-Configuration::instance('cloudinary://375413697912638:ZcFY1O2f1FzWPKaLyOVqbwARu-E@dqtcj65qr?secure=true');
-
-
 class Product {
     private $title;
     private $description;
@@ -21,20 +11,6 @@ class Product {
     private $alcohol;
     private $volume;
     private $tagline;
-
-    // Add the configureCloudinary method
-    private function configureCloudinary() {
-        Configuration::instance([
-            'cloud' => [
-                'cloud_name' => 'dqtcj65qr',
-                'api_key'    => '375413697912638',
-                'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
-            ],
-            'url' => [
-                'secure' => true
-            ]
-        ]);
-    }
 
     // Getters and setters
     public function getTitle() {
@@ -144,86 +120,32 @@ class Product {
         }
     }
 
-    public function uploadImage($file) {
-        // Ensure Cloudinary is configured
-        $this->configureCloudinary();
-
-        // Validate file is an image
-        $check = getimagesize($file["tmp_name"]);
-        if ($check === false) {
-            throw new \Exception('Bestand is geen afbeelding');
-        }
-
-        // Validate file size (5MB max)
-        if ($file["size"] > 5000000) {
-            throw new \Exception('Sorry, het bestand is te groot');
-        }
-
-        // Upload to Cloudinary
-        try {
-            $uploadResult = (new UploadApi())->upload($file['tmp_name'], [
-                'folder' => 'uploads/', // Optional: Specify folder in Cloudinary
-                'public_id' => pathinfo($file["name"], PATHINFO_FILENAME),
-                'overwrite' => true,
-                'resource_type' => 'image',
-            ]);
-            return $uploadResult['secure_url']; // Return the Cloudinary URL
-        } catch (\Exception $e) {
-            throw new \Exception('Upload to Cloudinary failed: ' . $e->getMessage());
-        }
-    }
-
-    public function saveProductImages($productId, $images) {
-        // Ensure Cloudinary is configured
-        $this->configureCloudinary();
-        $cloudinary = new Cloudinary();
-        $imagesArray = [];
-    
-        foreach ($images['name'] as $key => $name) {
-            $tmpName = $images['tmp_name'][$key];
-    
-            // Validate file upload
-            if ($images['error'][$key] !== UPLOAD_ERR_OK) {
-                throw new \Exception("File upload error: " . $images['error'][$key]);
-            }
-    
-            // Validate the file is an image
-            $check = getimagesize($tmpName);
-            if ($check === false) {
-                throw new \Exception("File is not a valid image.");
-            }
-    
-            // Upload to Cloudinary
-            try {
-                $result = $cloudinary->uploadApi()->upload($tmpName, [
-                    'folder' => 'product_images',
-                ]);
-    
-                // Save the Cloudinary URL
-                $imagesArray[] = $result['secure_url'];
-            } catch (\Exception $e) {
-                throw new \Exception("Failed to upload file to Cloudinary: " . $e->getMessage());
-            }
-        }
-    
-        // Save image paths to database
+    // save images to database
+    public function saveImages($product_id, $images) {
         try {
             $conn = Db::getConnection();
-            $conn->beginTransaction();
-    
-            $stmt = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
-            foreach ($imagesArray as $imagePath) {
-                $stmt->bindValue(":product_id", $productId);
-                $stmt->bindValue(":image_path", $imagePath);
-                $stmt->execute();
+            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            // Prepare the query
+            $statement = $conn->prepare("
+                INSERT INTO product_images (product_id, image_path) 
+                VALUES (:product_id, :image_path)
+            ");
+
+            // Bind values
+            $statement->bindValue(":product_id", $product_id);
+
+            // Loop through images and save them to the database
+            foreach ($images as $image) {
+                $statement->bindValue(":image_path", $image);
+                $statement->execute();
             }
-    
-            $conn->commit();
+
+            return true;
         } catch (\PDOException $e) {
-            if ($conn->inTransaction()) {
-                $conn->rollBack();
-            }
-            throw new \Exception("Error saving image paths to the database: " . $e->getMessage());
+            echo "Error during SQL execution: " . $e->getMessage();
+            error_log("Error adding product images: " . $e->getMessage());
+            return false;
         }
     }
 
