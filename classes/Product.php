@@ -1,21 +1,16 @@
 <?php
 namespace Alex\Eindwerk; 
+include_once(__DIR__ . '/../vendor/autoload.php');
+
 
 // Use the Configuration, Cloudinary, and UploadApi classes
-use Cloudinary\Configuration\Configuration;
 use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
 
-Configuration::instance([
-    'cloud' => [
-        'cloud_name' => 'dqtcj65qr',
-        'api_key'    => '375413697912638',
-        'api_secret' => 'ZcFY1O2f1FzWPKaLyOVqbwARu-E',
-    ],
-    'url' => [
-        'secure' => true
-    ]
-]);
+
+Configuration::instance('cloudinary://375413697912638:ZcFY1O2f1FzWPKaLyOVqbwARu-E@dqtcj65qr?secure=true');
+
 
 class Product {
     private $title;
