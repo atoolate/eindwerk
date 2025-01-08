@@ -68,13 +68,16 @@ class OrderItem {
     // save order items method in products_orders table
     // columns are product_id, order_id, quantity, price
 
-    public function saveOrderItems($order_id, $product_id, $quantity, $price, $withGlass) {
+    public function saveOrderItems($order_id, $product_id, $quantity, $price, $withGlass = 0) {
         $conn = Db::getConnection();
     
         // Validate and sanitize inputs before binding
         if (empty($order_id) || empty($product_id) || empty($quantity) || empty($price)) {
             throw new \InvalidArgumentException("Missing required fields for saving order items.");
         }
+
+        // Ensure withGlass is either 0 or 1
+        $withGlass = ($withGlass == 1) ? 1 : 0;
     
         $statement = $conn->prepare("
             INSERT INTO products_orders (order_id, product_id, quantity, price, withGlass) 

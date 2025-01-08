@@ -31,12 +31,12 @@
 
     if (isset($_POST['checkout'])) {
         // Validate and sanitize inputs
-        $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
-        $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
-        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-        $street = filter_input(INPUT_POST, 'street', FILTER_SANITIZE_STRING);
-        $postal_code = filter_input(INPUT_POST, 'postal_code', FILTER_SANITIZE_STRING);
-        $country = filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $email = $_POST['email'];
+        $street = $_POST['street'];
+        $postal_code = $_POST['postal_code'];
+        $country = $_POST['country'];
         
 
         if ($firstname && $lastname && $email && $street && $postal_code && $country) {
