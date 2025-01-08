@@ -2,8 +2,8 @@
 namespace Alex\Eindwerk; 
 
 use Cloudinary\Cloudinary;
-use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
+use Cloudinary\Configuration\Configuration;
 
 class Product {
     private $title;
@@ -29,7 +29,7 @@ class Product {
             'url' => [
                 'secure' => true
             ]
-        ])->validate();
+        ]);
     }
 
     // Getters and setters
@@ -78,39 +78,30 @@ class Product {
         return $this;
     }
 
-    public function getAlcohol()
-    {
+    public function getAlcohol() {
         return $this->alcohol;
     }
 
-    public function setAlcohol($alcohol)
-    {
+    public function setAlcohol($alcohol) {
         $this->alcohol = $alcohol;
-
         return $this;
     }
 
-    public function getVolume()
-    {
+    public function getVolume() {
         return $this->volume;
     }
 
-    public function setVolume($volume)
-    {
+    public function setVolume($volume) {
         $this->volume = $volume;
-
         return $this;
     }
 
-    public function getTagline()
-    {
+    public function getTagline() {
         return $this->tagline;
     }
 
-    public function setTagline($tagline)
-    {
+    public function setTagline($tagline) {
         $this->tagline = $tagline;
-
         return $this;
     }
 
@@ -149,10 +140,7 @@ class Product {
         }
     }
 
-    //save product images to database
-    // user can upload multiple images at once related to a product
-    // images should be uploaded into uploads folder
-    // save the path of the image in the database
+    // Save product images to database
     public function saveProductImages($productId, $images) {
         $cloudinary = new Cloudinary();
         $imagesArray = [];
@@ -173,8 +161,8 @@ class Product {
     
             // Upload to Cloudinary
             try {
-                $result = (new UploadApi())->upload($tmpName, [
-                    'folder' => 'product_images'
+                $result = $cloudinary->uploadApi()->upload($tmpName, [
+                    'folder' => 'product_images',
                 ]);
     
                 // Save the Cloudinary URL
@@ -204,8 +192,6 @@ class Product {
             throw new \Exception("Error saving image paths to the database: " . $e->getMessage());
         }
     }
-    
-    
 
     // Fetch all products
     public static function getAll() {
@@ -221,7 +207,7 @@ class Product {
         }
     }
 
-    // fetch all with images
+    // Fetch all with images
     public static function getAllWithData() {
         try {
             $conn = Db::getConnection();
@@ -229,9 +215,7 @@ class Product {
             $query = "
                 SELECT 
                     p.*, 
-                    GROUP_CONCAT(pi.image_name) AS image_names,
-                    GROUP_CONCAT(pi.image_type) AS image_types,
-                    GROUP_CONCAT(pi.image_data) AS image_data,
+                    GROUP_CONCAT(pi.image_path) AS image_paths,
                     c.name AS category_name
                 FROM 
                     products p
@@ -256,9 +240,8 @@ class Product {
             return [];
         }
     }
-    
 
-    // a method to get the total amount of products
+    // Get total amount of products
     public static function getTotalAmount() {
         try {
             $conn = Db::getConnection();
@@ -279,9 +262,7 @@ class Product {
             $query = "
                 SELECT 
                     p.*, 
-                    GROUP_CONCAT(pi.image_name) AS image_names,
-                    GROUP_CONCAT(pi.image_type) AS image_types,
-                    GROUP_CONCAT(pi.image_data) AS image_data,
+                    GROUP_CONCAT(pi.image_path) AS image_paths,
                     c.name AS category_name
                 FROM 
                     products p
@@ -309,7 +290,7 @@ class Product {
         }
     }
 
-    // search for products by title or decription
+    // Search for products by title or description
     public static function search($query) {
         try {
             $conn = Db::getConnection();
@@ -346,8 +327,4 @@ class Product {
             return [];
         }
     }
-    
-
-
-    
 }
