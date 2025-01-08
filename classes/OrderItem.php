@@ -68,7 +68,7 @@ class OrderItem {
     // save order items method in products_orders table
     // columns are product_id, order_id, quantity, price
 
-    public function saveOrderItems($order_id, $product_id, $quantity, $price, $withGlass = 0) {
+    public function saveOrderItems($order_id, $product_id, $quantity, $price, $withGlass) {
         $conn = Db::getConnection();
     
         // Validate and sanitize inputs before binding
@@ -89,7 +89,11 @@ class OrderItem {
         $statement->bindParam(":price", $price, \PDO::PARAM_STR);
         $statement->bindParam(":withGlass", $withGlass, \PDO::PARAM_INT);
     
-        return $statement->execute();
+        if (!$statement->execute()) {
+            error_log("Database error: " . implode(", ", $statement->errorInfo()));
+            return false;
+        }
+        return true;
     }
 
     // Get all order items for a specific order
