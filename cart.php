@@ -79,7 +79,7 @@ if (isset($_POST['delete'])) {
                         <input type="hidden" name="delete" value="<?php echo $key; ?>">
                         <!-- delete trash icon -->
                         <button type="submit" class="delete-button">
-                            Remove Product
+                            <i class="fa fa-trash"></i> Remove Product
                         </button>
                     </form>
                 </div>

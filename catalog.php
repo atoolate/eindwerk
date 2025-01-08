@@ -24,6 +24,12 @@
         exit();
     }
 
+    // Clear search query via AJAX
+    if (isset($_POST['clear'])) {
+        echo json_encode(['status' => 'success']);
+        exit();
+    }
+
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,7 +87,7 @@
                     <?php if(isset($_GET['query'])): ?>
                         <span class="search-query">
                             <?php echo $_GET['query']; ?>
-                            <a href="catalog.php?clear=true" class="clear-query">x</a>
+                            <a href="#" class="clear-query">x</a>
                         </span>
                     <?php endif; ?>
                 </form>
@@ -127,5 +133,23 @@
     <?php include 'footer.php'; ?>
 
     <script src="js/filter.js"></script>
+    <script>
+        document.querySelector('.clear-query').addEventListener('click', function(e) {
+            e.preventDefault();
+            fetch('catalog.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'clear=true'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = 'catalog.php';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
