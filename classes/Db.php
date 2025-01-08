@@ -10,14 +10,14 @@
                     // Correct DSN format: mysql:host=hostname;port=port;dbname=database_name
                     self::$conn = new \PDO(
                         // production database
-                        // "mysql:host=mysql.railway.internal;port=3306;dbname=railway", 
-                        // "root", 
-                        // "dEOIGgtjaVVqVaeLHtVxvgAMvUQfFAum"
+                        "mysql:host=mysql.railway.internal;port=3306;dbname=railway", 
+                        "root", 
+                        "dEOIGgtjaVVqVaeLHtVxvgAMvUQfFAum"
 
                         // local database
-                        "mysql:host=localhost;dbname=2xd-final-store",
-                        "root",
-                        "root"
+                        // "mysql:host=localhost;dbname=2xd-final-store",
+                        // "root",
+                        // "root"
                     );
                     self::$conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                     return self::$conn;
