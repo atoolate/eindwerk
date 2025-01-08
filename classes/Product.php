@@ -150,12 +150,18 @@ class Product {
             $tmpName = $images['tmp_name'][$key];
             $check = getimagesize($tmpName);
             if ($check === false) {
-                throw new \Exception("File is not a valid image.");
+                throw new \Exception("File '$name' is not a valid image.");
             }
     
             // Sanitize filename to prevent security issues
             $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
             $targetFile = $absoluteTargetDir . $safeName;
+    
+            // Avoid duplicate filenames
+            if (file_exists($targetFile)) {
+                $safeName = time() . '_' . $safeName;
+                $targetFile = $absoluteTargetDir . $safeName;
+            }
     
             // Move file to uploads folder
             if (move_uploaded_file($tmpName, $targetFile)) {
@@ -171,6 +177,9 @@ class Product {
             $conn = Db::getConnection();
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     
+            // Start a transaction
+            $conn->beginTransaction();
+    
             $statement = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
     
             foreach ($imagesArray as $imagePath) {
@@ -178,11 +187,19 @@ class Product {
                 $statement->bindValue(":image_path", $imagePath);
                 $statement->execute();
             }
+    
+            // Commit the transaction
+            $conn->commit();
         } catch (\PDOException $e) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+    
             error_log("Error adding product images: " . $e->getMessage());
             throw new \Exception("An error occurred while saving product images.");
         }
     }
+    
     
 
     // Fetch all products
