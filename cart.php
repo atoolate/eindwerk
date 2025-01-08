@@ -78,8 +78,8 @@ if (isset($_POST['delete'])) {
                     <form action="cart.php" method="post" class="delete-form">
                         <input type="hidden" name="delete" value="<?php echo $key; ?>">
                         <!-- delete trash icon -->
-                        <button type="submit" class="delete-button">
-                            <i class="fa fa-trash"></i> Remove Product
+                        <button type="submit" class="delete-button" style="background: none; border: none;">
+                            <i class="fa fa-trash" style="color: red;"></i>
                         </button>
                     </form>
                 </div>

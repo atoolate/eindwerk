@@ -133,23 +133,6 @@
     <?php include 'footer.php'; ?>
 
     <script src="js/filter.js"></script>
-    <script>
-        document.querySelector('.clear-query').addEventListener('click', function(e) {
-            e.preventDefault();
-            fetch('catalog.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'clear=true'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    window.location.href = 'catalog.php';
-                }
-            });
-        });
-    </script>
+    <script src="js/search.js"></script>
 </body>
 </html>

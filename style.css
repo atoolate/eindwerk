@@ -763,28 +763,12 @@ footer {
 .clear-query {
     text-decoration: none;
     font-weight: bold;
-    color: var(--c-grey);
+    color: red;
 }
 
 .search-bar {
     display: flex;
     gap: 1em;
-}
-
-.search-query {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.clear-query {
-    margin-left: 5px;
-    color: red;
-    cursor: pointer;
-    text-decoration: none;
 }
 
 /* Submit order button */
