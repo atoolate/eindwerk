@@ -180,6 +180,60 @@ class Product {
         }
     }
 
+    public function saveProductImages($productId, $images) {
+        // Ensure Cloudinary is configured
+        $this->configureCloudinary();
+        $cloudinary = new Cloudinary();
+        $imagesArray = [];
+    
+        foreach ($images['name'] as $key => $name) {
+            $tmpName = $images['tmp_name'][$key];
+    
+            // Validate file upload
+            if ($images['error'][$key] !== UPLOAD_ERR_OK) {
+                throw new \Exception("File upload error: " . $images['error'][$key]);
+            }
+    
+            // Validate the file is an image
+            $check = getimagesize($tmpName);
+            if ($check === false) {
+                throw new \Exception("File is not a valid image.");
+            }
+    
+            // Upload to Cloudinary
+            try {
+                $result = $cloudinary->uploadApi()->upload($tmpName, [
+                    'folder' => 'product_images',
+                ]);
+    
+                // Save the Cloudinary URL
+                $imagesArray[] = $result['secure_url'];
+            } catch (\Exception $e) {
+                throw new \Exception("Failed to upload file to Cloudinary: " . $e->getMessage());
+            }
+        }
+    
+        // Save image paths to database
+        try {
+            $conn = Db::getConnection();
+            $conn->beginTransaction();
+    
+            $stmt = $conn->prepare("INSERT INTO product_images (product_id, image_path) VALUES (:product_id, :image_path)");
+            foreach ($imagesArray as $imagePath) {
+                $stmt->bindValue(":product_id", $productId);
+                $stmt->bindValue(":image_path", $imagePath);
+                $stmt->execute();
+            }
+    
+            $conn->commit();
+        } catch (\PDOException $e) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            throw new \Exception("Error saving image paths to the database: " . $e->getMessage());
+        }
+    }
+
     // Fetch all products
     public static function getAll() {
         try {
