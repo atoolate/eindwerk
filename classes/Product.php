@@ -160,7 +160,7 @@ class Product {
                 // Save the relative path
                 $imagesArray[] = $targetDir . $safeName;
             } else {
-                throw new \Exception("Failed to upload file: " . $safeName);
+                throw new \Exception("Failed to upload file: " . $safeName . ". Please check the directory permissions.");
             }
         }
     
